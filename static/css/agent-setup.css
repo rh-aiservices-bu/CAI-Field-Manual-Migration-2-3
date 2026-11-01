@@ -1,0 +1,107 @@
+/* "Feed it to my AI Agent" modal (static/js/agent-setup.js).
+ *
+ * Styles the dialog only: the script renders every child. Theme variables
+ * throughout so dark mode follows html[data-bs-theme] — no literal colors
+ * here, same convention as chat.css. */
+
+.td-agent-setup {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.td-agent-setup::backdrop {
+  background: color-mix(in srgb, var(--bs-body-bg) 30%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.td-agent-setup[open] {
+  display: block;
+}
+
+.td-agent-setup__surface {
+  position: relative;
+  box-sizing: border-box;
+  width: min(34rem, calc(100vw - 2rem));
+  margin: 4rem auto;
+  padding: 1.5rem;
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  box-shadow: var(--td-brand-shadow-md, 0 12px 34px rgba(23, 42, 66, 0.2));
+}
+
+.td-agent-setup__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--bs-secondary-color);
+  cursor: pointer;
+}
+
+.td-agent-setup__close:hover {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-emphasis-color);
+}
+
+.td-agent-setup__title {
+  margin: 0 2.5rem 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--bs-emphasis-color);
+}
+
+.td-agent-setup__hint {
+  margin: 0 0 1rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.925rem;
+}
+
+.td-agent-setup__code {
+  margin: 0 0 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--td-code-inline-bg, var(--bs-secondary-bg));
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  max-height: 40vh;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.td-agent-setup__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.td-agent-setup__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4375rem 0.875rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  background: var(--bs-secondary-bg);
+  color: var(--bs-emphasis-color);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.td-agent-setup__copy:hover {
+  background: var(--bs-tertiary-bg);
+}
+
+.td-agent-setup__copy--done {
+  border-color: var(--bs-success, #198754);
+  color: var(--bs-success-text-emphasis, var(--bs-success, #198754));
+}

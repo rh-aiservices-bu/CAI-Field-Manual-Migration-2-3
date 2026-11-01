@@ -8,3 +8,13 @@
      inert. */ -}}
 <script>window.__TD_CHAT__ = { llmsFull: "{{ "field-manual/llms-full.txt" | relLangURL }}" };</script>
 <script src="{{ "js/chat.js" | relLangURL }}" defer></script>
+{{- /* "Feed it to my AI Agent" page action / palette row modal
+     (static/js/agent-setup.js). The repo is injected the same way
+     chat.js gets llmsFull, so the clone URL has one source
+     (params.github_repo) instead of a second literal in the JS. The
+     script guards itself: with no palette in the DOM it is inert, so
+     print bundles and search-off pages stay untouched. */ -}}
+<script>window.__TD_AGENT_SETUP__ = {
+  repo: "{{ printf "%s" site.Params.github_repo }}"
+};</script>
+<script src="{{ "js/agent-setup.js" | relLangURL }}" defer></script>

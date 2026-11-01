@@ -37,7 +37,11 @@ the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.gith
 **AI agents** — consume the markdown:
 
 - Per-page markdown via the page action menu: *Copy markdown*, *View
-  markdown*, *Open in Claude / ChatGPT*.
+  markdown*, *Open in Claude / Gemini / ChatGPT*.
+- **Command palette** (the navbar search box or `/`): type `agent` and
+  choose **"Feed it to my AI Agent"** — it opens a copy-ready prompt for
+  Claude Code or Codex: the agent clones the repo, reads the README and
+  the code, reports what the manual can do, and asks what to do next.
 - Whole site as [`llms.txt`](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/llms.txt).
 - The markdown, `llms.txt`, and print outputs carry every display option
   labeled (`Axis: Option`) and every customize token as its shipped
@@ -90,6 +94,14 @@ Where things live:
 - `layouts/_shortcodes/customize.html` +
   `layouts/_shortcodes/customize-form.html` — token substitution points
   and the Customize form
+- `static/js/agent-setup.js` + `static/css/agent-setup.css` (wired through
+  the `body-end`/`head-end` hooks) — the *Feed it to my AI Agent*
+  copy-prompt modal. The row is registered with the assistant page actions
+  in `layouts/_partials/actions/context.html` (`url: "#agent-prompt"`), so
+  it appears directly under Gemini in both the page action menu and the
+  palette. The JS intercepts that fragment hash, opens the modal, and clears
+  the hash so the action can fire again. The repo name reaches the JS via the
+  `__TD_AGENT_SETUP__` blob the same way the chat page gets `llmsFull`.
 - `.github/workflows/github-pages.yaml` — deploy workflow
 
 The project root stays minimal: the theme module supplies the navbar logo and
