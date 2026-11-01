@@ -98,11 +98,21 @@ Where things live:
   the `body-end`/`head-end` hooks) — the *Feed it to my AI Agent*
   copy-prompt modal. The row is registered with the assistant page actions
   in `layouts/_partials/actions/context.html` (`url: "#agent-prompt"`), so
-  it appears directly under Gemini in both the page action menu and the
-  palette. The JS intercepts that fragment hash, opens the modal, and clears
-  the hash so the action can fire again. The repo name reaches the JS via the
-  `__TD_AGENT_SETUP__` blob the same way the chat page gets `llmsFull`.
+  it appears directly under *Open Gemini* in both the page action menu and
+  the palette. The JS intercepts that fragment hash, opens the modal, and
+  clears the hash so the action can fire again. The repo name reaches the JS
+  via the `__TD_AGENT_SETUP__` blob the same way the chat page gets
+  `llmsFull`.
 - `.github/workflows/github-pages.yaml` — deploy workflow
+- `assets/js/action-registry.js`, `assets/js/page-actions.js`,
+  `layouts/_partials/actions/context.html`,
+  `layouts/_partials/actions/title-menu.html` — pinned copies of the oink
+  v1.4.0 action files with one deliberate change each: an *Open Gemini*
+  assistant action (`https://gemini.google.com/app`, plain app link —
+  readers write their own prompt; no URL-prefill plumbing) registered after
+  *Open in Claude* in the page action menu and the palette, plus the
+  *Feed it to my AI Agent* row. Re-diff against
+  `~/go/pkg/mod/github.com/pgsty/oink@v<ver>/` on a theme bump.
 
 The project root stays minimal: the theme module supplies the navbar logo and
 favicon, and build outputs (`public/`, `resources/`) are gitignored and
