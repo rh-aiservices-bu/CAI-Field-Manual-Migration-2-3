@@ -147,7 +147,7 @@
     function resolveUrl(actionOrId, value) {
       var action = typeof actionOrId === 'string' ? get(actionOrId) : actionOrId;
       if (!action || action.available === false) return null;
-      if (action.id === 'open_chatgpt' || action.id === 'open_claude' || action.id === 'open_gemini') {
+      if (action.id === 'open_chatgpt' || action.id === 'open_claude') {
         if (
           typeof action.promptTemplate !== 'string' ||
           action.promptTemplate.indexOf('%s') < 0
@@ -157,10 +157,11 @@
         });
         var assistantUrl = action.id === 'open_chatgpt'
           ? 'https://chatgpt.com/?hints=search&prompt=' + encodeURIComponent(prompt)
-          : action.id === 'open_claude'
-            ? 'https://claude.ai/new?q=' + encodeURIComponent(prompt)
-            : 'https://gemini.google.com/app?prompt=' + encodeURIComponent(prompt);
+          : 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
         return safeUrl(assistantUrl, windowObject.location.href);
+      }
+      if (action.id === 'open_gemini') {
+        return safeUrl(action.url, windowObject.location.href);
       }
       var target = value && value.url ? value.url : action.url;
       return safeUrl(target, windowObject.location.href);

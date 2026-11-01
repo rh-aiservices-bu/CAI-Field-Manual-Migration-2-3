@@ -103,7 +103,7 @@
 {{- $viewTitle := T "post_view_markdown" -}}
 {{- $chatgptTitle := T "ui_open_in_chatgpt" -}}
 {{- $claudeTitle := T "ui_open_in_claude" -}}
-{{- $geminiTitle := "Open in Gemini" -}}
+{{- $geminiTitle := "Open Gemini" -}}
 {{- $agentTitle := "Feed it to my AI Agent" -}}
 {{- $historyTitle := T "ui_view_history" -}}
 {{- $askKeyword := T "ui_open_in_prompt_label" -}}
@@ -140,9 +140,9 @@
     "url" (cond $assistantLinks $claudeURL "") "promptTemplate" (T "ui_open_in_prompt")
     "target" "blank" "placements" $assistantPlacements "options" (slice))
   (dict "id" "open_gemini" "title" $geminiTitle "description" $geminiTitle
-    "icon" "fa-brands fa-google" "keywords" (slice $geminiTitle $askKeyword "gemini" "google" "ai" "llm")
+    "icon" "fa-brands fa-google" "keywords" (slice $geminiTitle "gemini" "google" "ai" "llm")
     "kind" "url" "available" $assistantLinks "disabledReason" (cond $assistantLinks "" (printf "%s: %s" $geminiTitle $unavailable))
-    "url" (cond $assistantLinks "https://gemini.google.com/app" "") "promptTemplate" (T "ui_open_in_prompt")
+    "url" (cond $assistantLinks "https://gemini.google.com/app" "") "promptTemplate" ""
     "target" "blank" "placements" $assistantPlacements "options" (slice))
   (dict "id" "feed_agent" "title" $agentTitle "description" "Copy a setup prompt for Claude Code or Codex"
     "icon" "fa-solid fa-robot" "keywords" (slice $agentTitle "agent" "claude" "codex" "setup" "install" "clone" "prompt")

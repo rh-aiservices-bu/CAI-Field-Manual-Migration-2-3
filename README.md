@@ -37,7 +37,7 @@ the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.gith
 **AI agents** — consume the markdown:
 
 - Per-page markdown via the page action menu: *Copy markdown*, *View
-  markdown*, *Open in Claude / Gemini / ChatGPT*.
+  markdown*, *Open in Claude / ChatGPT*, *Open Gemini*.
 - **Command palette** (the navbar search box or `/`): type `agent` and
   choose **"Feed it to my AI Agent"** — it opens a copy-ready prompt for
   Claude Code or Codex: the agent clones the repo, reads the README and
