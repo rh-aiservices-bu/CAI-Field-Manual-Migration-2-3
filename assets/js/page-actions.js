@@ -83,7 +83,12 @@
       control.tagName === 'A'
     ) {
       syncUrl(control, id);
-      control.addEventListener('click', function () { syncUrl(control, id); });
+      control.addEventListener('click', function (event) {
+        syncUrl(control, id);
+        if (id !== 'open_gemini') return;
+        event.preventDefault();
+        window.OinkActions.run(id, { source: 'page' });
+      });
     }
   });
 

@@ -159,7 +159,7 @@
           ? 'https://chatgpt.com/?hints=search&prompt=' + encodeURIComponent(prompt)
           : action.id === 'open_claude'
             ? 'https://claude.ai/new?q=' + encodeURIComponent(prompt)
-            : 'https://gemini.google.com/app?q=' + encodeURIComponent(prompt);
+            : 'https://gemini.google.com/app';
         return safeUrl(assistantUrl, windowObject.location.href);
       }
       var target = value && value.url ? value.url : action.url;
@@ -203,6 +203,18 @@
         );
         if (!link) return Promise.reject(failure('unsafe_url', action));
         return writeClipboard(link).then(function () { return { action: action }; });
+      }
+      if (id === 'open_gemini') {
+        if (
+          typeof action.promptTemplate !== 'string' ||
+          action.promptTemplate.indexOf('%s') < 0
+        ) return Promise.reject(failure('missing_executor', action));
+        var geminiPrompt = action.promptTemplate.replace('%s', function () {
+          return windowObject.location.href;
+        });
+        return writeClipboard(geminiPrompt).then(function () {
+          return openUrl(action, context.value);
+        });
       }
       if (id === 'print') {
         windowObject.print();
