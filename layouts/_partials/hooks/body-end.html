@@ -15,6 +15,6 @@
      script guards itself: with no palette in the DOM it is inert, so
      print bundles and search-off pages stay untouched. */ -}}
 <script>window.__TD_AGENT_SETUP__ = {
-  repo: "{{ printf "%s" site.Params.github_repo }}"
+  repo: "{{ printf "%s" site.Params.github_repo | strings.TrimPrefix "https://github.com/" }}"
 };</script>
 <script src="{{ "js/agent-setup.js" | relLangURL }}" defer></script>

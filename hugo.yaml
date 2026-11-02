@@ -58,7 +58,7 @@ params:
   # 4.3:1 aspect in assets/scss/_styles_project.scss. Ink follows the site
   # theme toggle via the SVG's own prefers-color-scheme query.
   logo: icons/logo-rh-cai.svg
-  github_repo: rh-aiservices-bu/CAI-Field-Manual-prototype
+  github_repo: https://github.com/rh-aiservices-bu/CAI-Field-Manual-prototype
   github_branch: main
   offline_search: true
   copyright:
