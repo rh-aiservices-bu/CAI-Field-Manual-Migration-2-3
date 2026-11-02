@@ -35,6 +35,3 @@ Field manuals are read by humans or consumed by AI agents; they have to serve bo
 
 The site search indexes every manual (`offline_search`), reached with `/` or the navbar search box.
 
-## Google Analytics
-
-GA4 is live via the standard Hugo services config (`G-7ZXCS2MF1` in `hugo.yaml`) with `anonymize_ip: true`; the pinned partial renders the tag in production only, so local `hugo server` shows nothing.
