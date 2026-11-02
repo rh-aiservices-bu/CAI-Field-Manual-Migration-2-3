@@ -42,8 +42,7 @@ markup:
 
 services:
   googleAnalytics:
-    # Placeholder GA4 measurement ID — swap in the real ID before real traffic.
-    ID: G-XXXXXXXXXX
+    ID: G-7ZXCS2MF1
 
 outputs:
   home: [HTML, RSS, markdown, LLMS]

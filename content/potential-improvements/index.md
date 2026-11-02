@@ -22,7 +22,7 @@ Some capabilities the site already has through theme defaults — they show up t
 
 ### Per-page feedback
 
-One-click 👍/👎 at the end of a page, recorded through the site's existing gtag integration. Two gates apply before any event is recorded: `services.googleAnalytics.ID` is still the placeholder `G-XXXXXXXXXX`, and `layouts/_partials/google_analytics.html:6` skips the tag entirely outside production. Swap in a real ID and the widget below lights up on every page.
+One-click 👍/👎 at the end of a page, recorded through the site's existing gtag integration. Two gates apply before any event is recorded: the GA4 ID must be real (it is in `hugo.yaml`, production only), and the widget itself is still disabled (`feedback.enable: false`). Enabling the snippet below lights up the widget on every page; enabling GA alone does not.
 
 ```yaml
 params:

@@ -68,7 +68,7 @@ Where things live:
   line (`{value}` = the option label) — customize fields (user, cluster),
   `docs_section: field-manual` (drives the llms.txt Documentation index and
   the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
-  the whole site tree), GA4 placeholder
+  the whole site tree)
 - `data/home.yaml` — landing page sections (hero, cards, cta)
 - `content/_index.md` — home page front matter
 - `content/field-manual/` — the manuals; `hello-world/` doubles as the blank

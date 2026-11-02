@@ -37,4 +37,4 @@ The site search indexes every manual (`offline_search`), reached with `/` or the
 
 ## Google Analytics
 
-GA4 is wired via the standard Hugo services config with a placeholder measurement ID; a real ID lands before real traffic.
+GA4 is live via the standard Hugo services config (`G-7ZXCS2MF1` in `hugo.yaml`) with `anonymize_ip: true`; the pinned partial renders the tag in production only, so local `hugo server` shows nothing.
