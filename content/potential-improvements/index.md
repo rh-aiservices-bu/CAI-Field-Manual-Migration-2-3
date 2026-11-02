@@ -49,7 +49,7 @@ The per-page override is separate: `backlinks: true` (or `false`) in a page's fr
 
 ### Command-palette commands
 
-`github_repo` and `github_branch` are set, and the theme already renders Edit/History/New-page links as page actions — but nothing declares palette commands, so ⌘K has no quick commands. Two rules from the theme (`actions/site-commands.html`): a command's `id` may not reuse a built-in action id (reserved ids warn and drop the row), and each command defines exactly one of `url` or `action`.
+`github_repo` and `github_branch` are set, and the theme already renders Edit/History/New-page links as page actions — but nothing declares palette commands, so ⌘K has no quick commands. Two rules from the theme (`actions/site-commands.html`): a command's `id` may not reuse a built-in action id (reserved ids warn and drop the row), and each command defines exactly one of `url` or `action`. Note `github_repo` must be the full `https://github.com/owner/repo` URL: the theme concatenates it raw into the action links, so a bare `owner/repo` value renders scheme-less links that browsers resolve against the current page (404).
 
 ```yaml
 params:
