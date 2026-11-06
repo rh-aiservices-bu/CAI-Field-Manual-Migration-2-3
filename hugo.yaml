@@ -42,7 +42,7 @@ markup:
 
 services:
   googleAnalytics:
-    ID: G-7ZXCS2MF1
+    ID: G-7ZXCS2MF1D
 
 outputs:
   home: [HTML, RSS, markdown, LLMS]
