@@ -49,3 +49,13 @@ Sanctioned extension points (free to edit): `td-variant-selector.html`,
 Interactive behavior lives in `static/js/` and `assets/js/`. If you change it,
 verify the rendered page actually works (dev server + browser), not just that
 the build passes.
+
+## omp agent (CI)
+
+The repo runs an [omp](https://omp.sh)-based coding agent via
+`.github/workflows/omp.yml`. Comment `/omp <request>` on any issue or PR
+review thread to invoke it; it reads this file and README.md, and opens a
+draft PR from a branch `omp/issue-<n>` for any change. Configuration is three
+repo-level settings — `AGENT_BASE_URL` (variable), `AGENT_MODEL` (variable),
+`AGENT_API_KEY` (secret) — never in files. The publication gate above applies
+to the agent exactly as it applies to you.
