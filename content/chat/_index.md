@@ -1,7 +1,7 @@
 ---
 title: Chat
 description: Discuss this manual with your own model — bring a URL and an API key.
-weight: 30
+weight: 50
 icon: fa-solid fa-comments
 cascade:
   type: docs
