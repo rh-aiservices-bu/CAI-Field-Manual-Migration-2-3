@@ -66,7 +66,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           COMMENT_BODY="$(gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} --jq .body)"
-          PROMPT="$(printf 'Repository: %s\n%s is a comment on %s #%s.\nHandle this request as the repo agent. If you change files, commit them to a branch named omp/issue-%s and open a PR.\n\n<comment>\n%s\n</comment>\n' \
+          PROMPT="$(printf 'Repository: %s\n%s is a comment on %s #%s.\nHandle this request as the repo agent. If you change files, commit them to a branch named omp/issue-%s and open a PR.\n\nOUTPUT CONTRACT: your final message is captured after all tool calls finish and is posted verbatim on GitHub as the answer to this request. Make it the human-readable report itself, in clean GitHub-Flavored Markdown: status, what changed (branch, PR number, files), verification you ran with results, and open questions. Never end with raw JSON, YAML, shell payloads, diffs or file dumps meant for a tool call; those belong inside tool calls, not in your reply. Do not wrap the whole reply in a code fence.\n\n<comment>\n%s\n</comment>\n' \
             "${{ github.repository }}" \
             "${{ github.event.sender.login }}" \
             "${{ github.event.issue.html_url }}" \
@@ -74,24 +74,50 @@ jobs:
             "${{ github.event.issue.number }}" \
             "$COMMENT_BODY")"
           omp --model "agent/${AGENT_MODEL}" -p --no-session --no-lsp \
-            "$PROMPT" > "$RUNNER_TEMP/omp-output.txt" 2>&1; exit_code=$?
+            "$PROMPT" > "$RUNNER_TEMP/omp-stdout.txt" 2> "$RUNNER_TEMP/omp-stderr.txt"; exit_code=$?
           echo "exit_code=$exit_code" >> "$GITHUB_ENV"
-          tail -c 8000 "$RUNNER_TEMP/omp-output.txt"
+          echo '--- agent stdout (tail) ---'
+          tail -c 8000 "$RUNNER_TEMP/omp-stdout.txt" || true
+          echo '--- agent stderr (tail) ---'
+          tail -c 4000 "$RUNNER_TEMP/omp-stderr.txt" || true
           exit $exit_code
 
+      - name: Prepare agent output
+        if: always()
+        run: |
+          # omp prints its final message on stdout. If the agent ended its turn
+          # with a machine payload (e.g. the JSON it piped into `gh pr create`),
+          # unwrap the human-readable body field; if the payload has none, fence
+          # it so it still renders readably instead of a wall of escaped text.
+          BODY="$(tail -c 46000 "$RUNNER_TEMP/omp-stdout.txt" 2>/dev/null || true)"
+          if printf '%s' "$BODY" | jq -e 'type == "object"' >/dev/null 2>&1; then
+            UNWRAPPED="$(printf '%s' "$BODY" | jq -r '.body // empty' 2>/dev/null || true)"
+            if [ -n "$UNWRAPPED" ]; then
+              BODY="$UNWRAPPED"
+            fi
+          fi
+          if printf '%s' "$BODY" | jq -e 'type == "object" or type == "array"' >/dev/null 2>&1; then
+            BODY="$(printf 'The agent returned a raw JSON payload instead of a readable summary:\n\n```json\n%s\n```' "$BODY")"
+          fi
+          {
+            echo 'OMP_BODY<<OMP_BODY_EOF'
+            printf '%s' "$BODY"
+            echo
+            echo 'OMP_BODY_EOF'
+          } >> "$GITHUB_ENV"
+
       - name: Report result
+        if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          AGENT_BODY: ${{ env.OMP_BODY }}
         run: |
           {
-            echo "### omp run"
+            echo '### omp run'
             echo
-            echo '<details><summary>Agent output</summary>'
+            echo "<details><summary>Agent output (exit ${{ env.exit_code }})</summary>"
             echo
-            echo '```'
-            tail -c 8000 "$RUNNER_TEMP/omp-output.txt"
+            printf '%s\n' "$AGENT_BODY"
             echo
-            echo '```'
             echo '</details>'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -99,15 +125,10 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          AGENT_BODY: ${{ env.OMP_BODY }}
+          EXIT_CODE: ${{ env.exit_code }}
         run: |
-          BODY="$(tail -c 60000 "$RUNNER_TEMP/omp-output.txt")"
-          if [ -n "$BODY" ]; then
+          if [ -n "$AGENT_BODY" ]; then
             gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -f body="**omp run** (exit ${{ env.exit_code }})
-
-          <details><summary>agent output</summary>
-
-          $BODY
-
-          </details>"
+              -f body="$(printf '**omp run** (exit %s)\n\n<details><summary>agent output</summary>\n\n%s\n\n</details>' "$EXIT_CODE" "$AGENT_BODY")"
           fi
