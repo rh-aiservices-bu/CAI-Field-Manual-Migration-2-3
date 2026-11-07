@@ -103,7 +103,7 @@ jobs:
           BODY="$(tail -c 60000 "$RUNNER_TEMP/omp-output.txt")"
           if [ -n "$BODY" ]; then
             gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -f body="**omp run** (exit \${{ env.exit_code }})
+              -f body="**omp run** (exit ${{ env.exit_code }})
 
           <details><summary>agent output</summary>
 
