@@ -1,4 +1,4 @@
-sections: [hero, cards, cta]
+sections: [hero, timeline, cards, faq, cta]
 
 hero:
   align: center
@@ -46,3 +46,29 @@ cta:
   label: Github Issues
   url: https://github.com/rh-aiservices-bu/CAI-Field-Manual-prototype/issues
   style: primary
+
+timeline:
+  eyebrow: The format
+  title: Every manual walks the field-work timeline
+  items:
+    - date: Phase 1
+      icon: fa-solid fa-play
+      title: Set up
+      desc: One procedure that changes the system — prerequisites, status-gated commands, verification, rollback.
+    - date: Phase 2
+      icon: fa-solid fa-gauge-high
+      title: Operate
+      desc: Day-two health checks, drift detection, and when to escalate.
+    - date: Phase 3
+      icon: fa-solid fa-triangle-exclamation
+      title: Things that broke
+      desc: Known issues where you hit them — symptom, diagnosis, workaround, tracker id.
+
+faq:
+  eyebrow: For readers
+  title: Questions people actually ask
+  items:
+    - question: Why does every command show its expected output?
+      answer: A command whose output nobody checks is a guess about the system's state. The status gate turns "ran it" into "confirmed it" — see [Conventions](writing-the-field-manual/conventions/).
+    - question: Why do versions and ops modes live in a selector instead of separate pages?
+      answer: Divergence is permanent; separate pages fork the manual and drift apart. The selector filters, the choice persists, and the markdown output carries every variant labeled for agents.
