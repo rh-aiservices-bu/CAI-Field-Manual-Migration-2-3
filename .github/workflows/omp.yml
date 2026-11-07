@@ -1,0 +1,93 @@
+name: omp
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: omp-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  omp-agent:
+    # Only respond to explicit /omp mentions; ignore bots (including this
+    # workflow's own comments) to prevent loops.
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      contains(github.event.comment.body, '/omp')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install omp (pinned v18.18.0)
+        run: |
+          curl -sL -o /usr/local/bin/omp \
+            https://github.com/can1357/oh-my-pi/releases/download/v18.18.0/omp-linux-x64
+          chmod +x /usr/local/bin/omp
+          echo "ec271e0d7df4c0f57acb6a7a28f8585d46bd050bcef8494f6d33db8a6c0dfbba  /usr/local/bin/omp" | sha256sum -c -
+
+      - name: Configure agent
+        run: |
+          mkdir -p "$RUNNER_TEMP/agent-home/agent"
+          cat > "$RUNNER_TEMP/agent-home/agent/models.yml" <<EOF
+            providers:
+              agent:
+                name: agent
+                baseUrl: "${AGENT_BASE_URL}"
+                api: openai-completions
+                auth: apiKey
+                apiKey: AGENT_API_KEY
+                models:
+                  - id: "${AGENT_MODEL}"
+                    name: Agent Model
+                    contextWindow: 200000
+                    maxTokens: 32000
+          EOF
+        env:
+          AGENT_BASE_URL: ${{ vars.AGENT_BASE_URL }}
+          AGENT_MODEL: ${{ vars.AGENT_MODEL }}
+          AGENT_API_KEY: ${{ secrets.AGENT_API_KEY }}
+
+      - name: Run omp on the comment
+        id: run
+        env:
+          AGENT_MODEL: ${{ vars.AGENT_MODEL }}
+          AGENT_API_KEY: ${{ secrets.AGENT_API_KEY }}
+          PI_CODING_AGENT_DIR: ${{ runner.temp }}/agent-home/agent
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COMMENT_BODY="$(gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} --jq .body)"
+          PROMPT="$(printf 'Repository: %s\n%s is a comment on %s #%s.\nHandle this request as the repo agent. If you change files, commit them to a branch named omp/issue-%s and open a PR.\n\n<comment>\n%s\n</comment>\n' \
+            "${{ github.repository }}" \
+            "${{ github.event.sender.login }}" \
+            "${{ github.event.issue.html_url }}" \
+            "${{ github.event.issue.number }}" \
+            "${{ github.event.issue.number }}" \
+            "$COMMENT_BODY")"
+          omp --model "agent/${AGENT_MODEL}" -p --no-session --no-lsp \
+            "$PROMPT" > "$RUNNER_TEMP/omp-output.txt" 2>&1 || true
+
+      - name: Report result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "### omp run"
+            echo
+            echo '<details><summary>Agent output</summary>'
+            echo
+            echo '```'
+            tail -c 8000 "$RUNNER_TEMP/omp-output.txt"
+            echo
+            echo '```'
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
