@@ -24,7 +24,7 @@ jobs:
       contains(github.event.comment.body, '/omp')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -74,7 +74,10 @@ jobs:
             "${{ github.event.issue.number }}" \
             "$COMMENT_BODY")"
           omp --model "agent/${AGENT_MODEL}" -p --no-session --no-lsp \
-            "$PROMPT" > "$RUNNER_TEMP/omp-output.txt" 2>&1 || true
+            "$PROMPT" > "$RUNNER_TEMP/omp-output.txt" 2>&1; exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_ENV"
+          tail -c 8000 "$RUNNER_TEMP/omp-output.txt"
+          exit $exit_code
 
       - name: Report result
         env:
@@ -91,3 +94,20 @@ jobs:
             echo '```'
             echo '</details>'
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Reply on the issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BODY="$(tail -c 60000 "$RUNNER_TEMP/omp-output.txt")"
+          if [ -n "$BODY" ]; then
+            gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+              -f body="**omp run** (exit \${{ env.exit_code }})
+
+          <details><summary>agent output</summary>
+
+          $BODY
+
+          </details>"
+          fi
