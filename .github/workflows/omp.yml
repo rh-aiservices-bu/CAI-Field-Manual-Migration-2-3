@@ -73,7 +73,7 @@ jobs:
             "${{ github.event.issue.number }}" \
             "${{ github.event.issue.number }}" \
             "$COMMENT_BODY")"
-          omp --model "agent/${AGENT_MODEL}" -p --no-session --no-lsp \
+          omp --model "agent/${AGENT_MODEL}" -p --no-lsp \
             "$PROMPT" > "$RUNNER_TEMP/omp-stdout.txt" 2> "$RUNNER_TEMP/omp-stderr.txt"; exit_code=$?
           echo "exit_code=$exit_code" >> "$GITHUB_ENV"
           echo '--- agent stdout (tail) ---'
@@ -81,6 +81,12 @@ jobs:
           echo '--- agent stderr (tail) ---'
           tail -c 4000 "$RUNNER_TEMP/omp-stderr.txt" || true
           exit $exit_code
+
+      - name: Print omp stats
+        if: always()
+        env:
+          PI_CODING_AGENT_DIR: ${{ runner.temp }}/agent-home/agent
+        run: omp stats -s || true
 
       - name: Prepare agent output
         if: always()
