@@ -97,6 +97,10 @@
       el.appendChild(seg);
       updateStatus(axis, resolve(axis));
     });
+    // The "reading as <user> on api<cluster>" tail needs both customize
+    // fields; a site without them (params.customize unset) ends the
+    // sentence at the axes.
+    if (!('user' in fields) || !('cluster' in fields)) return;
     el.appendChild(document.createTextNode(' — reading as '));
     var user = document.createElement('span');
     user.setAttribute('data-td-customize', 'user');

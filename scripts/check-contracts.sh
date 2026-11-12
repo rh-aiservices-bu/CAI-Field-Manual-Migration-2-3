@@ -65,7 +65,7 @@ for md in $manual_mds; do
     pages=$((pages + 1))
     src_variants=$(grep -cE '\{\{< variant ' "$src" || true)
     [ "$src_variants" -eq 0 ] && continue
-    out_labels=$(grep -cE '\*\*(RHAIE Version|Ops Mode): ' "$md" || true)
+    out_labels=$(grep -cE '\*\*(Deployment type|Cluster network|Kueue end state): ' "$md" || true)
     labels=$((labels + out_labels))
     if grep -qE '\{\{< variant ' "$md"; then
         echo "CONTRACT variant-labels: $md leaked raw variant shortcodes into the markdown output"

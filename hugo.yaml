@@ -92,41 +92,50 @@ params:
   # Display options: the page-top selector (layouts/_partials/
   # td-variant-selector.html, called by the docs/baseof.html override)
   # persists these in localStorage and filters content blocks tagged with
-  # the variant shortcode. Ordered slice: render order in the selector and
-  # the Customize form. Every axis needs `neutral` (the show-all option id,
+  # the variant shortcode. Ordered slice: render order in the selector.
+  # Every axis needs `neutral` (the show-all option id,
   # never hides and never hidden) and a `default` that is one of its option
-  # ids. Block ids may list several options: {{< variant version "3.5 3.6" >}}.
+  # ids. Block ids may list several options: {{< variant deploy gitops >}}.
   variants:
-    - id: version
-      label: RHAIE Version
-      default: '3.6'
-      neutral: all
-      status:
-        specific: 'RHAIE {value}'
-        neutral: all versions
-      options:
-        - { id: all, label: Show all }
-        - { id: '3.4', label: '3.4' }
-        - { id: '3.5', label: '3.5' }
-        - { id: '3.6', label: '3.6' }
-    - id: mode
-      label: Ops Mode
+    # Deployment type: whether Argo CD (or another GitOps controller) owns the
+    # OpenShift AI resources. All changes are made with the oc CLI either
+    # way; GitOps-managed clusters need extra steps (pause the reconciler,
+    # record changes for Git, hand back after the migration).
+    - id: deploy
+      label: Deployment type
       default: all
       neutral: all
       status:
         specific: '{value} steps'
-        neutral: every ops mode
+        neutral: steps for every deployment type
       options:
         - { id: all, label: Show all }
-        - { id: gitops, label: GitOps }
-        - { id: manual, label: Manual }
-        - { id: scripted, label: Scripted }
-  # Customize fields: text values the reader sets once on the "Customize
-  # this!" page and that substitute into every `customize` shortcode token
-  # across the manuals. Defaults are the shipped examples, not real values.
-  customize:
-    - { id: user, label: Your name, default: guest }
-    - { id: cluster, label: Cluster, default: .ocp.abcd.sandbox1234.opentlc.com }
+        - { id: gitops, label: GitOps-managed }
+        - { id: standard, label: Not GitOps-managed }
+    # Air-gapped clusters carry extra mirror steps.
+    - id: env
+      label: Cluster network
+      default: all
+      neutral: all
+      status:
+        specific: '{value} cluster'
+        neutral: connected and disconnected clusters
+      options:
+        - { id: all, label: Show all }
+        - { id: connected, label: Connected }
+        - { id: disconnected, label: Disconnected (air-gapped) }
+    # The Kueue end state changes several pre- and post-upgrade steps.
+    - id: kueue
+      label: Kueue end state
+      default: all
+      neutral: all
+      status:
+        specific: 'Kueue {value}'
+        neutral: both Kueue end states
+      options:
+        - { id: all, label: Show all }
+        - { id: removed, label: Removed }
+        - { id: unmanaged, label: Unmanaged (external RHBOK) }
 
 # Site header navigation. oink renders .Site.Menus.main in the navbar center
 # zone and the home mobile drawer; the entry's page supplies the icon, and

@@ -5,7 +5,7 @@ icon: fa-solid fa-compass
 weight: 10
 ---
 
-Field manuals here are written against six conventions. Each one below states why it exists, what a reader loses when a manual skips it, and the rule itself. The [Hello World manual]({{< relref "/field-manual/hello-world" >}}) is the working exemplar — every rule on this page is something it does.
+Field manuals here are written against six conventions. Each one below states why it exists, what a reader loses when a manual skips it, and the rule itself. The [RHOAI 2.25 → 3.5 migration manual](../content/field-manual/rhoai-2-25-to-3-5/) is the working exemplar.
 
 ## Chronological information architecture
 
@@ -43,4 +43,4 @@ A field manual is read by a human in a browser and consumed by an agent as markd
 
 **Rule: write every page so the markdown-only reader gets every variant labeled and every token at its shipped default.**
 
-See the markup in [Annotated examples](examples/), or go straight to [Write your first manual](write-a-manual/).
+

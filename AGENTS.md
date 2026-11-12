@@ -18,17 +18,23 @@ Note the root 404 is expected: with a path in baseURL the dev server serves at
 
 ## Content rules
 
-- Manuals live in `content/field-manual/<manual>/`. New manual = duplicate the
-  blank skeleton in `content/field-manual/hello-world/`.
-- Author doctrine: read `content/writing-the-field-manual/conventions.md` before
+- Manuals live in `content/field-manual/<manual>/`. The one manual is
+  `content/field-manual/rhoai-2-25-to-3-5/` (one page per migration phase).
+- Author doctrine: read `Docs/field-manual-conventions.md` before
   writing manual pages. Six conventions: outcome first; prerequisites stated;
   every command followed by a verify step with literal expected output;
   verification; rollback; known issues documented where the reader hits them.
-- Display options: variant blocks `{{< variant mode gitops >}}` (also
-  `manual`, `scripted`) and `{{< variant version "3.4" >}}`. Option ids must
+- Display options: variant blocks `{{< variant deploy gitops >}}` (also
+  `standard` = not GitOps-managed; every command is `oc` CLI, so there is no
+  console/CLI split), `{{< variant env disconnected >}}` (also `connected`), and
+  `{{< variant kueue removed >}}` (also `unmanaged`). Option ids must
   exist in `hugo.yaml` `params.variants`. Never delete a variant block to fix a
   rendering complaint — markdown/llms.txt outputs show ALL variants.
-- Customize tokens: `{{< customize user >}}` and `{{< customize cluster >}}`.
+- Environment values are plain placeholders, not customize tokens: write
+  `https://api.<cluster-domain>:6443`, `<token>`, `<namespace>`, and the
+  literal migration namespace `rhai-migration`. Never hardcode a real cluster
+  host. (`params.customize` is unset; the customize shortcodes remain but are
+  unused.)
   Never hardcode names or cluster hosts.
 
 ## Do not touch without re-diffing

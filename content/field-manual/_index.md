@@ -1,6 +1,6 @@
 ---
-title: Hello World
-description: Chronological field manuals — setup, operations, and the things that broke.
+title: Field Manual
+description: Field manuals for Red Hat OpenShift AI — every step verified, every known break documented where you hit it.
 weight: 20
 icon: fa-solid fa-map
 cascade:
@@ -9,7 +9,7 @@ cascade:
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 ---
 
-Field manuals are chronological: each one walks the field-work timeline from setup through operations to the things that broke. The selector at the top of every manual (RHAIE version, ops mode) filters every manual and persists across pages and visits.
+Field manuals follow the order you do the work in. The selector at the top of every page (deployment type, cluster network, Kueue end state) filters the steps to your situation and remembers your choice across pages and visits.
 
-- [Hello World Field Manual](hello-world/)
+- [RHOAI 2.25 → 3.5 migration](rhoai-2-25-to-3-5/)
 {.cards}

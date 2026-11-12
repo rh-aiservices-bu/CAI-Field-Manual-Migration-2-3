@@ -2,35 +2,34 @@ Rendered site: https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/
 
 # CAI Field Manual
 
-The CAI Field Manual is a working example of what future field manuals should
-look like: chronological field-work notes — set up → operate → things that
-broke — where every command is followed by a verify step with literal expected
-output, and known issues are documented where the reader hits them. It
-emulates the [RHOAI MaaS guide](https://rh-aiservices-bu.github.io/rhoai-maas-guide/modules/main/index.html)'s
-approach with deliberate divergences; the rationale lives in
-[Why this approach](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/why-this-approach/).
+A field manual for migrating Red Hat OpenShift AI 2.25.10+ in place to 3.5,
+ordered by when you do the work. Every command is followed by a verify step
+with literal expected output, and known issues are documented where the
+reader hits them. The author conventions are in
+[`Docs/field-manual-conventions.md`](Docs/field-manual-conventions.md).
 
 Built with [Hugo](https://gohugo.io/) and the [OINK](https://oink.pgsty.com/)
 theme (`github.com/pgsty/oink`).
 
 ## How to consume it
 
-Start at [Field Manual](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/field-manual/) —
-the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/field-manual/hello-world/).
+Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/field-manual/rhoai-2-25-to-3-5/)
+  (`content/field-manual/rhoai-2-25-to-3-5/`) — the in-place OpenShift AI
+  2.25.10+ → 3.5 migration, one page per phase (pre-flight → baseline →
+  assess → convert model serving → remediate → workbench images → upgrade →
+  post-upgrade → re-test → clean up) and a *Things that broke* symptom index.
 
 **Humans** — read the rendered HTML:
 
-- The selector at the top of every manual (RHAIE version: 3.4 / 3.5 / 3.6;
-  ops mode: GitOps / Manual / Scripted — each with *Show all*) filters
-  content; the selected pill is clearly highlighted, and a status line
-  beneath the pills restates the current view as a sentence, e.g. *Showing
-  RHAIE 3.6, GitOps steps — reading as guest on
-  api.ocp.abcd.sandbox1234.opentlc.com*; the choice persists in
+- The selector at the top of every page (*Deployment type*: GitOps-managed
+  / Not GitOps-managed; *Cluster network*: Connected /
+  Disconnected (air-gapped); *Kueue end state*: Removed / Unmanaged (external
+  RHBOK) — each with *Show all*) filters content; a status line beneath the
+  pills restates the current view as a sentence, e.g. *Showing GitOps-managed
+  steps, connected and disconnected clusters, Kueue Removed*; the choice persists in
   `localStorage` across pages, visits, and tabs.
-- The **Customize this!** page (bottom of the manual nav) sets every choice
-  in one place: RHAIE version, ops mode, your name (default `guest`), and
-  your cluster (default `.ocp.abcd.sandbox1234.opentlc.com`). The name and
-  cluster substitute into every `customize` token across the manuals.
+- Commands use plain placeholders (`<cluster-domain>`, `<token>`,
+  `<namespace>`) and the literal migration namespace `rhai-migration`.
 - Search with `/` or the navbar search box (`offline_search`).
 - Each section also renders a print bundle for offline/print reading.
 
@@ -44,9 +43,8 @@ the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.gith
   the code, reports what the manual can do, and asks what to do next.
 - Whole site as [`llms.txt`](https://rh-aiservices-bu.github.io/CAI-Field-Manual-prototype/llms.txt).
 - The markdown, `llms.txt`, and print outputs carry every display option
-  labeled (`Axis: Option`) and every customize token as its shipped
-  default — only the interactive HTML filters content or substitutes
-  values, so agents always see all variants with concrete values.
+  labeled (`Axis: Option`) — only the interactive HTML filters content, so
+  agents always see all variants.
 
 ## Report issues, propose changes
 
@@ -54,8 +52,7 @@ the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.gith
   with the page URL (or the `content/` path) and what you hit.
   *(Labels and triage conventions TBD for now.)*
 - **Changes** — PRs to `main` are welcome. Content lives in
-  `content/field-manual/<manual>/`; start a new manual by duplicating the blank
-  skeleton in `content/field-manual/hello-world/`. Run the publication gate
+  `content/field-manual/rhoai-2-25-to-3-5/`. Run the publication gate
   (below) before opening a PR. Merges to `main` deploy automatically via
   GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions**
   (one-time admin step).
@@ -65,19 +62,16 @@ Where things live:
 - `hugo.yaml` — site config: display-option (variant) axes — an ordered
   slice with per-axis `neutral` (show-all) and `default`, plus optional
   `status.specific` / `status.neutral` phrases for the selector's status
-  line (`{value}` = the option label) — customize fields (user, cluster),
+  line (`{value}` = the option label) — no customize fields (the
+  customize shortcodes remain but are unused),
   `docs_section: field-manual` (drives the llms.txt Documentation index and
   the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
   the whole site tree)
 - `data/home.yaml` — landing page sections (hero, cards, cta)
 - `content/_index.md` — home page front matter
-- `content/field-manual/` — the manuals; `hello-world/` doubles as the blank
-  skeleton to duplicate
-- `content/why-this-approach.md` — design rationale (what the prototype
-  copies from the MaaS guide, changes, and why)
-- `content/writing-the-field-manual/` — the author doctrine section (how
-  to write a manual: the six conventions, annotated examples, and the
-  walkthrough for a first manual)
+- `content/field-manual/rhoai-2-25-to-3-5/` — the migration manual
+- `Docs/field-manual-conventions.md` — the author doctrine (the six
+  conventions every page follows)
 - `layouts/_partials/google_analytics.html` — GA4 partial (the theme's
   head.html calls it in production)
 - `layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
