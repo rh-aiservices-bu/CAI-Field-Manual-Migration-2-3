@@ -33,7 +33,7 @@ cta:
   title: "We want your feedback."
   text: "Report issues here"
   label: Github Issues
-  url: https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide/issues
+  url: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3/issues
   style: primary
 
 timeline:

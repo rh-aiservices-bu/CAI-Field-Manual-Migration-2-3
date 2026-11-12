@@ -1,5 +1,5 @@
 title: CAI Field Manual
-baseURL: https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/
+baseURL: https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/
 defaultContentLanguage: en
 disableLanguages: [zh, fr]
 enableGitInfo: true
@@ -58,7 +58,7 @@ params:
   # 4.3:1 aspect in assets/scss/_styles_project.scss. Ink follows the site
   # theme toggle via the SVG's own prefers-color-scheme query.
   logo: icons/logo-rh-cai.svg
-  github_repo: https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide
+  github_repo: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3
   github_branch: main
   offline_search: true
   copyright:
