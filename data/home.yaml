@@ -8,8 +8,8 @@ hero:
     - words: [{ text: Migrated in the right order. }]
   lead: An in-place migration from Red Hat OpenShift AI 2.25.10+ to 3.5, ordered by when you do the work. Every command has a verify step, and every known break is documented where you hit it.
   actions:
-    - { label: Start the migration, url: field-manual/rhoai-2-25-to-3-5/, icon: fa-solid fa-route, style: primary }
-    - { label: Something broke?, url: field-manual/rhoai-2-25-to-3-5/things-that-broke/, icon: fa-solid fa-triangle-exclamation }
+    - { label: Start the migration, url: rhoai-2-25-to-3-5/, icon: fa-solid fa-route, style: primary }
+    - { label: Something broke?, url: rhoai-2-25-to-3-5/things-that-broke/, icon: fa-solid fa-triangle-exclamation }
 
 cards:
   eyebrow: Start here
@@ -19,21 +19,21 @@ cards:
     - title: RHOAI 2.25 → 3.5 migration
       desc: "Pre-flight, baseline, assess, convert model serving, remediate the platform, workbench images, upgrade, post-upgrade, re-test, clean up."
       icon: fa-solid fa-route
-      url: field-manual/rhoai-2-25-to-3-5/
+      url: rhoai-2-25-to-3-5/
     - title: Things that broke
       desc: "A symptom index: match what you see, then jump to the fix on the page where it happens."
       icon: fa-solid fa-triangle-exclamation
-      url: field-manual/rhoai-2-25-to-3-5/things-that-broke/
-    - title: Chat
-      desc: "Ask questions about the migration. The assistant answers from this manual."
-      icon: fa-solid fa-comments
-      url: chat/
+      url: rhoai-2-25-to-3-5/things-that-broke/
+    # - title: Chat
+    #   desc: "Ask questions about the migration. The assistant answers from this manual."
+    #   icon: fa-solid fa-comments
+    #   url: chat/
 
 cta:
   title: "We want your feedback."
   text: "Report issues here"
   label: Github Issues
-  url: https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide/issues
+  url: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3/issues
   style: primary
 
 timeline:

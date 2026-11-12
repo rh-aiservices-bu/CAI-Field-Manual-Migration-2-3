@@ -1,5 +1,5 @@
 title: CAI Field Manual
-baseURL: https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/
+baseURL: https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/
 defaultContentLanguage: en
 disableLanguages: [zh, fr]
 enableGitInfo: true
@@ -49,7 +49,7 @@ outputs:
   page: [HTML, markdown]
   # LLMSFULL is enabled per section in front matter: the theme emits it only
   # for a top-level section and warns for nested ones, so a site-wide section
-  # output trips /field-manual/hello-world/. content/field-manual/_index.md
+  # output trips every nested section. content/rhoai-2-25-to-3-5/_index.md
   # opts in; the chat page reads that bundle as its whole-manual context.
   section: [HTML, RSS, print, markdown]
 
@@ -58,7 +58,7 @@ params:
   # 4.3:1 aspect in assets/scss/_styles_project.scss. Ink follows the site
   # theme toggle via the SVG's own prefers-color-scheme query.
   logo: icons/logo-rh-cai.svg
-  github_repo: https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide
+  github_repo: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3
   github_branch: main
   offline_search: true
   copyright:
@@ -75,9 +75,11 @@ params:
     section_index: cards
     blog_index: cards
     sidebar_menu_foldable: true
-    # Left nav shows the whole site tree from Home: the three top-level
-    # entries (field manual, chat, why this approach) each expand in place,
-    # instead of the root switcher swapping one section's tree at a time.
+    # Left nav shows the whole site tree from Home: the manual's overview
+    # row expands in place, instead of the root switcher swapping one
+    # section's tree at a time. Chat is currently hidden (draft: true on
+    # content/chat/_index.md until the section is functional), so the tree
+    # has the manual plus Home for now.
     docs_sidebar_root: home
     sidebar_root_menu: false
     # Numbered workshop-chrome nav (B): CSS counters give the top level "N."
@@ -85,7 +87,7 @@ params:
     # `all`/`groups` would paint marks next to the numbers; marks stay in
     # landing cards, page headers, and the navbar.
     sidebar_icon_policy: none
-    docs_section: field-manual
+    docs_section: rhoai-2-25-to-3-5
     share: [claude, chatgpt, linkedin, email, copy]
     page_context_menu:
       assistant_links: true
@@ -139,14 +141,19 @@ params:
 
 # Site header navigation. oink renders .Site.Menus.main in the navbar center
 # zone and the home mobile drawer; the entry's page supplies the icon, and
-# llms.txt lists it under Site index. Field Manual stays reachable through the
-# landing cards and the sidebar, so Chat is the only entry for now.
+# llms.txt lists it under Site index. Chat is not functional yet, so it is
+# hidden from the site: the menu entry below is commented out, the Chat card
+# in data/home.yaml is commented out, and content/chat/_index.md carries
+# draft: true. Field Manual stays reachable through the landing cards and
+# the sidebar; re-enabling Chat means undoing those three toggles.
 menus:
-  main:
-    - identifier: chat
-      name: Chat
-      pageRef: /chat
-      weight: 30
+  # `main: []` stays: with the only entry commented out, a bare `main:` key
+  # decodes as null and fails the config load. Put re-enabled entries under it.
+  main: []
+  # - identifier: chat
+  #   name: Chat
+  #   pageRef: /chat
+  #   weight: 30
 
 module:
   imports:

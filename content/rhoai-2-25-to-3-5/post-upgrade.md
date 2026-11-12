@@ -5,13 +5,13 @@ weight: 80
 icon: fa-solid fa-list-check
 ---
 
-**Outcome:** the DSC is `Ready`, the Data Science Gateway is `Programmed=True`, `inferenceservice-config` is managed again with no unwanted redeploys, every workbench is on `kube-rbac-proxy`, RayClusters run under KubeRay without the oauth-proxy sidecar, Guardrails and TrustyAI are migrated with no data loss, and every component is verified. **Phase 8 of 10 · After upgrade.** Next: [Re-test]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test" >}}).
+**Outcome:** the DSC is `Ready`, the Data Science Gateway is `Programmed=True`, `inferenceservice-config` is managed again with no unwanted redeploys, every workbench is on `kube-rbac-proxy`, RayClusters run under KubeRay without the oauth-proxy sidecar, Guardrails and TrustyAI are migrated with no data loss, and every component is verified. **Phase 8 of 10 · After upgrade.** Next: [Re-test]({{< relref "rhoai-2-25-to-3-5/re-test" >}}).
 
 The operator is on 3.5, but the migration isn't finished. Several `rhai-cli migrate` actions still have to bring components across. **Work through this page in order.** 8.2 (Gateway) blocks 8.5 (Ray), and 8.3 must run before you judge model health.
 
 ## Prerequisites
 
-- [Upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade" >}}) complete: the 3.5 CSV is `Succeeded`.
+- [Upgrade]({{< relref "rhoai-2-25-to-3-5/upgrade" >}}) complete: the 3.5 CSV is `Succeeded`.
 - The `rhai-cli-0` pod and its PVC are still present. In a new pod shell, re-run `export KUBECONFIG=/tmp/.kubeconfig; export PATH="/opt/rhai-cli/bin:$PATH"` and log in again.
 - In-pod actions may print `phase pre-upgrade but effective phase is post-upgrade`. That warning is harmless.
 
@@ -55,7 +55,7 @@ oc get dsc -o json | jq -r '.items[0].status.conditions[] | select(.status!="Tru
 {{< /variant >}}
 
 {{< variant kueue unmanaged >}}
-**Kueue Unmanaged:** `KueueReady` should be `True`. If it reports `Managed is not supported`, the pre-upgrade RHBOK migration wasn't finished: complete it now. If it's `False` with JobSet missing, see [Upgrade 7.5]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade#jobset" >}}).
+**Kueue Unmanaged:** `KueueReady` should be `True`. If it reports `Managed is not supported`, the pre-upgrade RHBOK migration wasn't finished: complete it now. If it's `False` with JobSet missing, see [Upgrade 7.5]({{< relref "rhoai-2-25-to-3-5/upgrade#jobset" >}}).
 {{< /variant >}}
 
 #### Known issue: DSC held at `AdminAckRequired` (upgrade gates) {#ki-admin-ack}
@@ -84,13 +84,13 @@ oc get cm odh-upgrade-acks -n redhat-ods-operator -o json \
 
 | Gate | Example message | Fix in |
 |------|-----------------|--------|
-| `ack-3.5-kserve` | `kserve blocking workloads found: 2 Serverless InferenceServices, 1 ModelMesh InferenceServices, 1 multi-model ServingRuntimes` | [Convert model serving]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving" >}}) |
-| `ack-3.5-dependencies-kueue-operator` | `Kueue managementState Managed is not supported` | [5.7 Kueue]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#kueue" >}}) |
-| `ack-3.5-removed-codeflare` | `CodeFlare internal CR present` | [5.1]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) / [5.7]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#disable" >}}) |
-| `ack-3.5-removed-modelmeshserving` | `ModelMeshServing internal CR present` | [5.7]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#disable" >}}) |
-| `ack-3.5-dependencies-servicemeshoperatorv2` | `Service Mesh Operator v2 subscription … is still installed` | [5.8]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#service-mesh" >}}) / [5.9]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}) |
-| `ack-3.5-ray` | `2 CodeFlare-managed RayClusters still require pre-upgrade backup acknowledgement` | [5.1]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) |
-| `ack-3.5-trustyai` | `1 TrustyAIService instances using PVC storage require pre-upgrade backup` | [5.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}) |
+| `ack-3.5-kserve` | `kserve blocking workloads found: 2 Serverless InferenceServices, 1 ModelMesh InferenceServices, 1 multi-model ServingRuntimes` | [Convert model serving]({{< relref "rhoai-2-25-to-3-5/convert-model-serving" >}}) |
+| `ack-3.5-dependencies-kueue-operator` | `Kueue managementState Managed is not supported` | [5.7 Kueue]({{< relref "rhoai-2-25-to-3-5/remediate-platform#kueue" >}}) |
+| `ack-3.5-removed-codeflare` | `CodeFlare internal CR present` | [5.1]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) / [5.7]({{< relref "rhoai-2-25-to-3-5/remediate-platform#disable" >}}) |
+| `ack-3.5-removed-modelmeshserving` | `ModelMeshServing internal CR present` | [5.7]({{< relref "rhoai-2-25-to-3-5/remediate-platform#disable" >}}) |
+| `ack-3.5-dependencies-servicemeshoperatorv2` | `Service Mesh Operator v2 subscription … is still installed` | [5.8]({{< relref "rhoai-2-25-to-3-5/remediate-platform#service-mesh" >}}) / [5.9]({{< relref "rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}) |
+| `ack-3.5-ray` | `2 CodeFlare-managed RayClusters still require pre-upgrade backup acknowledgement` | [5.1]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) |
+| `ack-3.5-trustyai` | `1 TrustyAIService instances using PVC storage require pre-upgrade backup` | [5.2]({{< relref "rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}) |
 
 **Workaround.** **Clear each gate by doing the work it names**, then let the operator re-evaluate. These are the same conditions `rhai-cli lint` reports before the upgrade, so a cluster that passed a clean assessment arrives with every gate already `true`.
 
@@ -135,7 +135,7 @@ Then open the **Red Hat OpenShift AI** link in the OpenShift console and confirm
 - ModelRegistry: `failed to compute gateway domain: gateway domain is missing`.
 - The ingress-operator log says **`Istio CRDs are managed by an unknown party`**. That's the giveaway.
 
-**Diagnosis.** When you uninstalled the Service Mesh 2 (Maistra 2.6.x) operator in [5.9]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}), OLM left its `*.istio.io` CRDs behind, serving only `v1beta1`/`v1alpha3`. On OCP 4.20.31+, 4.21.22+, and 4.22+, the OCP built-in Gateway API ("sail" Istio) provides the control plane, and it **refuses to install its own `v1` CRDs while foreign Istio CRDs exist**.
+**Diagnosis.** When you uninstalled the Service Mesh 2 (Maistra 2.6.x) operator in [5.9]({{< relref "rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}), OLM left its `*.istio.io` CRDs behind, serving only `v1beta1`/`v1alpha3`. On OCP 4.20.31+, 4.21.22+, and 4.22+, the OCP built-in Gateway API ("sail" Istio) provides the control plane, and it **refuses to install its own `v1` CRDs while foreign Istio CRDs exist**.
 
 ```sh
 oc logs -n openshift-ingress-operator deploy/ingress-operator -c ingress-operator --tail=200 | grep -c "managed by an unknown party"
@@ -184,7 +184,7 @@ True
 Ready
 ```
 
-The `*.maistra.io` CRDs hold no CRs and don't block sail. You can optionally remove them in [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up" >}}).
+The `*.maistra.io` CRDs hold no CRs and don't block sail. You can optionally remove them in [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up" >}}).
 
 **Tracker.** None filed. Observed in a field run.
 
@@ -207,12 +207,12 @@ oc patch gatewayconfig default-gateway --type=merge -p '{"spec":{"networkPolicy"
 **Tracker.** None.
 
 {{< variant env disconnected >}}
-**Disconnected:** if `servicemeshoperator3` failed to subscribe, the DSCI isn't `Ready`, or `data-science-gateway` shows `Unknown`, see KB [7141146](https://access.redhat.com/solutions/7141146) and re-check the [OSSM v3 mirror]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade#mirror-ossm" >}}).
+**Disconnected:** if `servicemeshoperator3` failed to subscribe, the DSCI isn't `Ready`, or `data-science-gateway` shows `Unknown`, see KB [7141146](https://access.redhat.com/solutions/7141146) and re-check the [OSSM v3 mirror]({{< relref "rhoai-2-25-to-3-5/upgrade#mirror-ossm" >}}).
 {{< /variant >}}
 
 ### 8.3 Restore the inferenceservice-config ConfigMap {#restore-isvc-config}
 
-You set it to `managed=false` in [5.6]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#isvc-config" >}}). Now hand control back. The action restores the annotation, restarts the KServe controller, and checks that no ISVC was redeployed. **Inside the pod:**
+You set it to `managed=false` in [5.6]({{< relref "rhoai-2-25-to-3-5/remediate-platform#isvc-config" >}}). Now hand control back. The action restores the annotation, restarts the KServe controller, and checks that no ISVC was redeployed. **Inside the pod:**
 
 ```sh
 rhai-cli migrate run --migration modelserving.managed-isvc-config --target-version 3.5.0
@@ -281,7 +281,7 @@ All workbenches have been migrated
 Tell users they can restart their workbenches. Their URLs are new: get them from the dashboard.
 
 > [!NOTE]
-> **Custom images with oauth-proxy built in** can't be fixed by this patch. They need the [rebuild]({{< relref "/field-manual/rhoai-2-25-to-3-5/workbench-images#triage" >}}). The action flags them.
+> **Custom images with oauth-proxy built in** can't be fixed by this patch. They need the [rebuild]({{< relref "rhoai-2-25-to-3-5/workbench-images#triage" >}}). The action flags them.
 >
 > **Deferred image migration.** If some workbenches couldn't be stopped before the upgrade, migrate them now. Bump the tags (Jupyter `2025.2` recommended, code-server `2025.2` required, RStudio `latest` plus a rebuild). Then either edit and save the workbench in the dashboard (it patches automatically), or delete and recreate it **using the same PVC** so no data is lost.
 
@@ -295,7 +295,7 @@ Tell users they can restart their workbenches. Their URLs are new: get them from
 oc describe notebook <name> -n <ns>
 ```
 
-**Workaround.** The usual cause is a custom image that still has oauth-proxy built in. [Rebuild it]({{< relref "/field-manual/rhoai-2-25-to-3-5/workbench-images#triage" >}}) and re-import it.
+**Workaround.** The usual cause is a custom image that still has oauth-proxy built in. [Rebuild it]({{< relref "rhoai-2-25-to-3-5/workbench-images#triage" >}}) and re-import it.
 
 **Tracker.** None.
 
@@ -315,7 +315,7 @@ Managed
 Running
 ```
 
-If KubeRay is missing, see [Known issue: `ray: Removed` silently leaves RayClusters unmanaged]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ki-ray-removed" >}}). Set `ray` back to `Managed` and wait for the operator before you continue:
+If KubeRay is missing, see [Known issue: `ray: Removed` silently leaves RayClusters unmanaged]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ki-ray-removed" >}}). Set `ray` back to `Managed` and wait for the operator before you continue:
 
 ```sh
 oc patch $(oc get dsc -o name | head -n1) --type=merge -p '{"spec":{"components":{"ray":{"managementState":"Managed"}}}}'
@@ -363,7 +363,7 @@ Then re-check: `STATUS=ready`, `AVAILABLE` equal to `DESIRED`, and every pod `1/
 
 **Tracker.** None filed. Observed in a field run.
 
-The migration leaves the old `ray-dashboard-<cluster>` Routes and `<cluster>-oauth-<hash>` Services behind. They now return **HTTP 403** because their ServiceAccount is gone. They're harmless, and you remove them in [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up" >}}).
+The migration leaves the old `ray-dashboard-<cluster>` Routes and `<cluster>-oauth-<hash>` Services behind. They now return **HTTP 403** because their ServiceAccount is gone. They're harmless, and you remove them in [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up" >}}).
 
 ### 8.6 Patch the GuardrailsOrchestrators {#guardrails}
 
@@ -387,7 +387,7 @@ Expected output (per orchestrator; shape):
 my-gorch-7c9d8f6b4-abcde 1/1
 ```
 
-Then compare each `/info` with your [Baseline]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline" >}}). Every service that was `HEALTHY` before should still be `HEALTHY`:
+Then compare each `/info` with your [Baseline]({{< relref "rhoai-2-25-to-3-5/baseline" >}}). Every service that was `HEALTHY` before should still be `HEALTHY`:
 
 ```sh
 GORCH_ROUTE_HEALTH=$(oc get routes -n <namespace> "<gorch-name>-health" -o jsonpath='{.spec.host}')
@@ -430,7 +430,7 @@ Expected output:
 deployment.apps/trustyai-service-operator-controller-manager condition met
 ```
 
-Compare the current metric count with your backup, per namespace. Run this on your **workstation**, against the copy you made in [5.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}). The pod image doesn't ship `jq`.
+Compare the current metric count with your backup, per namespace. Run this on your **workstation**, against the copy you made in [5.2]({{< relref "rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}). The pod image doesn't ship `jq`.
 
 ```sh
 export BACKUP_DIR=./trustyai-backup
@@ -519,7 +519,7 @@ Running
 
 Then check the dashboard under **Develop & train → Feature Store**, which has a new Gateway URL.
 
-**AI Pipelines.** **Inside the pod**, diff against the [5.3 snapshot]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ai-pipelines" >}}):
+**AI Pipelines.** **Inside the pod**, diff against the [5.3 snapshot]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ai-pipelines" >}}):
 
 ```sh
 rhai-cli migrate run --migration ai-pipelines.post-upgrade-check --target-version 3.5.0
@@ -527,7 +527,7 @@ rhai-cli migrate run --migration ai-pipelines.post-upgrade-check --target-versio
 
 Then have pipeline users import and run a pipeline, and confirm that scheduled runs are still enabled.
 
-**Llama Stack → OGX.** Recreate fresh `OGXServer` (v1beta1) CRs. Use the [5.4 archive]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}}) only as *reference*, because the SQLite data can't be imported. 3.5 needs PostgreSQL 14+, an explicitly enabled embedding provider, the `Vector_IO` API, `llama-stack-client` 0.4.x, and `config.yaml` (formerly `run.yaml`). See [Deploying an OGX server](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_ogx/deploying-ogx-server_rag).
+**Llama Stack → OGX.** Recreate fresh `OGXServer` (v1beta1) CRs. Use the [5.4 archive]({{< relref "rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}}) only as *reference*, because the SQLite data can't be imported. 3.5 needs PostgreSQL 14+, an explicitly enabled embedding provider, the `Vector_IO` API, `llama-stack-client` 0.4.x, and `config.yaml` (formerly `run.yaml`). See [Deploying an OGX server](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_ogx/deploying-ogx-server_rag).
 
 **Kubeflow Training Operator.** Compare with your pre-upgrade list, then run the read-only enumeration (it creates nothing and pulls nothing):
 
@@ -619,7 +619,7 @@ Expected output:
 Current and target versions are the same (3.5), no checks will be executed.
 ```
 
-Your post-upgrade confidence comes from 8.1–8.9 and the [Re-test]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test" >}}) diff, not from the lint.
+Your post-upgrade confidence comes from 8.1–8.9 and the [Re-test]({{< relref "rhoai-2-25-to-3-5/re-test" >}}) diff, not from the lint.
 
 ## Verification
 
@@ -639,4 +639,4 @@ Your post-upgrade confidence comes from 8.1–8.9 and the [Re-test]({{< relref "
 - **A RayCluster:** recreate it from `./ray-backup/rhoai-3.x/` with `--raycluster-from-backup`.
 - **Deleted stale Istio CRDs:** sail reinstalls them at `v1`. The Maistra v1beta1 versions are deliberately not restored.
 
-For anything else, go forward with Red Hat Support on your proactive case, or restore the [Pre-flight backup]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#backup" >}}).
+For anything else, go forward with Red Hat Support on your proactive case, or restore the [Pre-flight backup]({{< relref "rhoai-2-25-to-3-5/pre-flight#backup" >}}).

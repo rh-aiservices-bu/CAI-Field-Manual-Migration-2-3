@@ -5,15 +5,15 @@ weight: 70
 icon: fa-solid fa-circle-up
 ---
 
-**Outcome:** `rhods-operator` 3.5 is `Succeeded`, no 2.x CSV is left, the JobSet operator is installed, the DSC and DSCI are `Ready`, and the Subscription is on **`stable-3.5`**. **Phase 7 of 10 · Upgrade.** Next: [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade" >}}).
+**Outcome:** `rhods-operator` 3.5 is `Succeeded`, no 2.x CSV is left, the JobSet operator is installed, the DSC and DSCI are `Ready`, and the Subscription is on **`stable-3.5`**. **Phase 7 of 10 · Upgrade.** Next: [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade" >}}).
 
 > [!CAUTION]
-> **This is the point of no return.** Once you approve the InstallPlan, the only way back is restoring the [Pre-flight backup]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#backup" >}}). OpenShift AI doesn't support rolling back an in-place migration.
+> **This is the point of no return.** Once you approve the InstallPlan, the only way back is restoring the [Pre-flight backup]({{< relref "rhoai-2-25-to-3-5/pre-flight#backup" >}}). OpenShift AI doesn't support rolling back an in-place migration.
 
 ## Prerequisites
 
-- Phases 4–6 complete. **The latest `rhai-cli lint` shows zero critical or prohibited findings.** Nothing enforces this: the lint can't stop OLM (see the [overview]({{< relref "/field-manual/rhoai-2-25-to-3-5#the-assessment-drives-the-work-but-it-does-not-stop-you" >}})).
-- The Subscription's approval is `Manual` ([5.10]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#final-readiness" >}})).
+- Phases 4–6 complete. **The latest `rhai-cli lint` shows zero critical or prohibited findings.** Nothing enforces this: the lint can't stop OLM (see the [overview]({{< relref "rhoai-2-25-to-3-5#the-assessment-drives-the-work-but-it-does-not-stop-you" >}})).
+- The Subscription's approval is `Manual` ([5.10]({{< relref "rhoai-2-25-to-3-5/remediate-platform#final-readiness" >}})).
 - Every workbench is stopped. Everyone, including you, is **logged out of the OpenShift AI dashboard**.
 
 ## Procedure
@@ -169,7 +169,7 @@ rhods-operator.3.5.0 Succeeded
 oc logs -n redhat-ods-operator deploy/rhods-operator --tail=50
 ```
 
-**Workaround.** A stuck InstallPlan usually means a removed component was left `Managed`. Re-run the [assessment]({{< relref "/field-manual/rhoai-2-25-to-3-5/assess" >}}) if you are still on 2.25, fix what it reports, and the upgrade resumes. If the CSV is `Succeeded` but the DSC is held, see [Known issue: DSC held at AdminAckRequired]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-admin-ack" >}}).
+**Workaround.** A stuck InstallPlan usually means a removed component was left `Managed`. Re-run the [assessment]({{< relref "rhoai-2-25-to-3-5/assess" >}}) if you are still on 2.25, fix what it reports, and the upgrade resumes. If the CSV is `Succeeded` but the DSC is held, see [Known issue: DSC held at AdminAckRequired]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-admin-ack" >}}).
 
 **Tracker.** None.
 
@@ -274,8 +274,8 @@ Ready
 
 If the wait times out, **don't debug components yet.** Check the DSC conditions first. The two most common causes are documented in Post-upgrade:
 
-- `Ready=False [AdminAckRequired]` → [Known issue: DSC held at AdminAckRequired]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-admin-ack" >}})
-- `ProvisioningFailed: modelregistry`, or a Gateway that never programs → [Known issue: stale Service Mesh 2 Istio CRDs]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}})
+- `Ready=False [AdminAckRequired]` → [Known issue: DSC held at AdminAckRequired]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-admin-ack" >}})
+- `ProvisioningFailed: modelregistry`, or a Gateway that never programs → [Known issue: stale Service Mesh 2 Istio CRDs]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}})
 
 ```sh
 oc get dsc -o json | jq -r '.items[0].status.conditions[] | select(.status!="True") | "\(.type) \(.reason) \(.message)"'
@@ -320,4 +320,4 @@ If users had bookmarked dashboard URLs, set up redirects now: KB [7137771](https
 
 ## Rollback
 
-**None supported.** From here, the only path back to 2.25 is restoring the [Pre-flight backup]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#backup" >}}) (etcd snapshot plus OADP). If the upgrade is stuck, go forward: fix the cause in [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade" >}}) and contact Red Hat Support on your proactive case.
+**None supported.** From here, the only path back to 2.25 is restoring the [Pre-flight backup]({{< relref "rhoai-2-25-to-3-5/pre-flight#backup" >}}) (etcd snapshot plus OADP). If the upgrade is stuck, go forward: fix the cause in [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade" >}}) and contact Red Hat Support on your proactive case.

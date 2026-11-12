@@ -57,7 +57,7 @@ for pair in $(grep -rhoE '\{\{< variant [a-z_]+ ("[^"]*"|[a-z0-9._-]+) >\}\}' co
         esac
     done
 done
-manual_mds=$(find public -name index.md -path "*/field-manual/*")
+manual_mds=$(find public -name index.md -path "*/rhoai-2-25-to-3-5/*")
 for md in $manual_mds; do
     src="content/${md#public/}"; src=${src%/index.md}.md
     [ -f "$src" ] || src="content/${md#public/}_index.md"

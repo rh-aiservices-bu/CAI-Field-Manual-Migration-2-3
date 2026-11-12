@@ -192,9 +192,24 @@ code.td-customize-token {
 // Home row (d-md-none) and divider heading rows are excluded from counting
 // so the drawer, desktop, and any future sidebar_divider agree on numbers.
 // Top-level rows render semibold like the example's chapter titles.
+//
+// Single-manual exception: with docs_sidebar_root: home the promoted tree
+// has one visible top-level row -- the manual's overview. It is the
+// unnumbered cover, so its row increments nothing and suppresses its
+// ::before; its child pages then count 1-11 from their own list's reset.
+// A second manual will need the rule dropped in favor of parent-derived
+// numbering (a sidebar-tree layout change, not CSS).
 #td-section-nav {
   .td-shell-tree__list {
     counter-reset: td-nav;
+  }
+
+
+  // The promoted top-level list holds only the unnumbered cover row, so it
+  // must not establish a counter: with a reset there, the pages'
+  // counters() would render the dead outer scope as "0.N".
+  & > ul.td-shell-tree__list {
+    counter-reset: none;
   }
 
   .td-shell-tree__item:not(.d-md-none):not(.td-shell-tree__heading) {
@@ -202,6 +217,17 @@ code.td-customize-token {
 
     & > .td-shell-tree__row > .td-shell-tree__link > span::before {
       content: counters(td-nav, ".") " ";
+    }
+  }
+
+  // The manual's overview row: unnumbered cover (source order beats the
+  // generic increment rule; same specificity). counter-increment: none also
+  // stops it implicitly instantiating the counter in the top-level scope.
+  & > ul > .td-shell-tree__item:not(.d-md-none):not(.td-shell-tree__heading) {
+    counter-increment: none;
+
+    & > .td-shell-tree__row > .td-shell-tree__link > span::before {
+      content: none;
     }
   }
 

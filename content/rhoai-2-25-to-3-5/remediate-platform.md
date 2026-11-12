@@ -5,7 +5,7 @@ weight: 50
 icon: fa-solid fa-screwdriver-wrench
 ---
 
-**Outcome:** every stateful component is backed up to the `rhai-cli` PVC and copied to your workstation. Kueue is `Removed` or `Unmanaged`. CodeFlare, ModelMesh, and KServe Serverless are `Removed`. Service Mesh 2, Serverless, and standalone Authorino are uninstalled. The full lint shows **zero critical findings**. **Phase 5 of 10 · Before upgrade.** Next: [Workbench images]({{< relref "/field-manual/rhoai-2-25-to-3-5/workbench-images" >}}).
+**Outcome:** every stateful component is backed up to the `rhai-cli` PVC and copied to your workstation. Kueue is `Removed` or `Unmanaged`. CodeFlare, ModelMesh, and KServe Serverless are `Removed`. Service Mesh 2, Serverless, and standalone Authorino are uninstalled. The full lint shows **zero critical findings**. **Phase 5 of 10 · Before upgrade.** Next: [Workbench images]({{< relref "rhoai-2-25-to-3-5/workbench-images" >}}).
 
 The rule for this whole phase: **back up before you flip, and flip in dependency order.** Some flips destroy state, and some backup actions only work while the component that owns the data is still installed.
 
@@ -20,12 +20,12 @@ The rule for this whole phase: **back up before you flip, and flip in dependency
 
 ## Prerequisites
 
-- [Convert model serving]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving" >}}) complete: the non-RawDeployment ISVC count is `0`.
+- [Convert model serving]({{< relref "rhoai-2-25-to-3-5/convert-model-serving" >}}) complete: the non-RawDeployment ISVC count is `0`.
 - A shell in `rhai-cli-0` (**inside the pod**) and a workstation shell.
-- **You are ready to upgrade soon.** The CodeFlare flip in 5.1 leaves user-created RayClusters without CodeFlare's security config until the upgrade lands. Don't open a long gap between this phase and [Upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade" >}}).
+- **You are ready to upgrade soon.** The CodeFlare flip in 5.1 leaves user-created RayClusters without CodeFlare's security config until the upgrade lands. Don't open a long gap between this phase and [Upgrade]({{< relref "rhoai-2-25-to-3-5/upgrade" >}}).
 
 {{< variant deploy gitops >}}
-**GitOps:** the DSC, DSCI, and operator Subscriptions you change here are usually in Git. With the reconciler paused (see [Pre-flight]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#stop-gitops" >}})), patch them directly as shown, and record each change for the Git update in [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}}).
+**GitOps:** the DSC, DSCI, and operator Subscriptions you change here are usually in Git. With the reconciler paused (see [Pre-flight]({{< relref "rhoai-2-25-to-3-5/pre-flight#stop-gitops" >}})), patch them directly as shown, and record each change for the Git update in [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}}).
 {{< /variant >}}
 
 > [!NOTE]
@@ -68,7 +68,7 @@ rhoai-3.x
 ```
 
 - `rhoai-2.x/raycluster-<name>-<ns>.yaml`: the CR as it is today.
-- `rhoai-3.x/raycluster-<name>-<ns>.yaml`: the converted 3.x shape. It's noticeably smaller because the oauth-proxy sidecar, ServiceAccount, and volumes are stripped out. That trimmed shape is what a correctly migrated cluster should end up running. [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ray" >}})'s `--raycluster-from-backup` needs the right one.
+- `rhoai-3.x/raycluster-<name>-<ns>.yaml`: the converted 3.x shape. It's noticeably smaller because the oauth-proxy sidecar, ServiceAccount, and volumes are stripped out. That trimmed shape is what a correctly migrated cluster should end up running. [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ray" >}})'s `--raycluster-from-backup` needs the right one.
 
 Copy the backup off the pod (workstation) and confirm the clusters are still `ready`:
 
@@ -194,7 +194,7 @@ Expected output (the last line):
 ```
 
 > [!CAUTION]
-> **This file must survive the upgrade.** Don't delete the PVC or the `rhai-cli` StatefulSet before [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) runs the post-upgrade check.
+> **This file must survive the upgrade.** Don't delete the PVC or the `rhai-cli` StatefulSet before [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) runs the post-upgrade check.
 
 ### 5.4 Delete the LlamaStackDistributions {#delete-llamastack}
 
@@ -236,7 +236,7 @@ Expected output (the last line):
 0
 ```
 
-Owners recreate them as `OGXServer` CRs in [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) and port their client code: `VectorDB` → `Vector_IO`, Completions → OpenAI-compatible format, embeddings → an external embedding-model endpoint, and a review of agent code. See [Working with OGX (3.5)](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_ogx/index).
+Owners recreate them as `OGXServer` CRs in [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) and port their client code: `VectorDB` → `Vector_IO`, Completions → OpenAI-compatible format, embeddings → an external embedding-model endpoint, and a review of agent code. See [Working with OGX (3.5)](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/3.5/html/working_with_ogx/index).
 
 ### 5.5 Inventory the components you aren't migrating {#non-migrating}
 
@@ -364,7 +364,7 @@ Expected output (last line):
 Unmanaged
 ```
 
-`KueueReady` reaches `True` only after the upgrade, once the JobSet operator is installed ([Upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade#jobset" >}})).
+`KueueReady` reaches `True` only after the upgrade, once the JobSet operator is installed ([Upgrade]({{< relref "rhoai-2-25-to-3-5/upgrade#jobset" >}})).
 {{< /variant >}}
 
 #### CodeFlare (confirm)
@@ -392,7 +392,7 @@ oc get dsc -o jsonpath='{.items[0].spec.components.ray.managementState}{"\n"}'
 oc get pods -A | grep -i kuberay
 ```
 
-**Workaround.** Leave `ray: Managed`, unless you are deliberately dropping Ray and have no RayClusters to keep. If it's already `Removed`, set it back to `Managed` and continue at [Post-upgrade 8.5]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ray" >}}).
+**Workaround.** Leave `ray: Managed`, unless you are deliberately dropping Ray and have no RayClusters to keep. If it's already `Removed`, set it back to `Managed` and continue at [Post-upgrade 8.5]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ray" >}}).
 
 **Tracker.** None filed. Observed in a field run.
 
@@ -534,7 +534,7 @@ Expected output:
 ```
 
 > [!IMPORTANT]
-> **The Service Mesh 2 CRDs stay behind, and that's deliberate for now.** OLM never removes CRDs, so the Maistra `*.istio.io` CRDs survive. After the upgrade they **block the 3.5 Data Science Gateway**. Don't delete them now. They're removed, with a zero-CR safety check, in [Post-upgrade 8.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}).
+> **The Service Mesh 2 CRDs stay behind, and that's deliberate for now.** OLM never removes CRDs, so the Maistra `*.istio.io` CRDs survive. After the upgrade they **block the 3.5 Data Science Gateway**. Don't delete them now. They're removed, with a zero-CR safety check, in [Post-upgrade 8.2]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}).
 
 ### 5.10 Final pre-upgrade readiness {#final-readiness}
 
@@ -600,5 +600,5 @@ You are still on 2.25, so most flips can be reversed. The deletions can't.
 
 - **Component flips:** set the component back to `Managed` with the same `oc patch` (for example, `codeflare`, `modelmeshserving`, `kserve.serving`, DSCI `serviceMesh`). For Serverless and Service Mesh, the operators must be reinstalled first if you've already done 5.9.
 - **`inferenceservice-config`:** `oc apply -f ./inferenceservice-config-backup.yaml`.
-- **Not reversible:** deleted LlamaStackDistributions and their data, and any CSVs or operands you uninstalled (those need a reinstall). For anything beyond a component flip, restore from the [Pre-flight backup]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#backup" >}}).
+- **Not reversible:** deleted LlamaStackDistributions and their data, and any CSVs or operands you uninstalled (those need a reinstall). For anything beyond a component flip, restore from the [Pre-flight backup]({{< relref "rhoai-2-25-to-3-5/pre-flight#backup" >}}).
 - **Don't leave CodeFlare `Removed` for long without upgrading.** Users could create RayClusters without its security configuration.

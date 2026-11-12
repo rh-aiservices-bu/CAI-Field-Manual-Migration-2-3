@@ -5,11 +5,11 @@ weight: 30
 icon: fa-solid fa-clipboard-check
 ---
 
-**Outcome:** a long-lived `rhai-cli` pod with a persistent backup volume in `rhai-migration`, a first assessment report, and that report attached to your proactive support case. The findings decide which of Phases 4–6 you need. **Phase 3 of 10 · Before upgrade.** Next: [Convert model serving]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving" >}}).
+**Outcome:** a long-lived `rhai-cli` pod with a persistent backup volume in `rhai-migration`, a first assessment report, and that report attached to your proactive support case. The findings decide which of Phases 4–6 you need. **Phase 3 of 10 · Before upgrade.** Next: [Convert model serving]({{< relref "rhoai-2-25-to-3-5/convert-model-serving" >}}).
 
 ## Prerequisites
 
-- [Baseline]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline" >}}) saved.
+- [Baseline]({{< relref "rhoai-2-25-to-3-5/baseline" >}}) saved.
 - Permission to create a namespace, a StatefulSet, and a PVC.
 - A StorageClass that can provision a 1 Gi RWO volume. The default StorageClass works on most clusters.
 
@@ -102,7 +102,7 @@ pod/rhai-cli-0 condition met
 ```
 
 > [!CAUTION]
-> **Keep this PVC until the very end.** `/tmp/rhoai-upgrade-backup` holds your reports and component backups, including the AI Pipelines snapshot that the *post*-upgrade check diffs against. Delete it only in [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up" >}}), after copying everything off.
+> **Keep this PVC until the very end.** `/tmp/rhoai-upgrade-backup` holds your reports and component backups, including the AI Pipelines snapshot that the *post*-upgrade check diffs against. Delete it only in [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up" >}}), after copying everything off.
 
 #### Known issue: rhai-cli pod never becomes Ready (PVC Pending) {#ki-pvc-pending}
 
@@ -158,21 +158,21 @@ The action works out on its own whether it is in the pre- or post-upgrade phase.
 
 | Component | Action | Phase |
 |-----------|--------|-------|
-| Model serving | `modelserving.serverless-to-raw` | [4]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving#serverless" >}}) |
-| | `modelserving.modelmesh-to-raw` | [4]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving#modelmesh" >}}) |
-| | `modelserving.hardwareprofiles-ignorelist` | [5.6]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#isvc-config" >}}) |
-| | `modelserving.managed-isvc-config` | [8.3]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#restore-isvc-config" >}}) |
-| Workbenches | `workbenches.patch-auth-model`, `workbenches.verify-migration` | [8.4]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) |
-| TrustyAI | `trustyai.metrics`, `trustyai.data` | [5.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}), [8.7]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#trustyai" >}}) |
-| | `trustyai.patch-guardrails`, `trustyai.migrate-gorch-otel-exporter` | [8.6]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#guardrails" >}}) |
-| | `trustyai.break-gpu-deadlock` | [8.7]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#trustyai" >}}) |
-| Llama Stack / OGX | `llamastack.backup` | [5.4]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}}) |
-| AI Pipelines | `ai-pipelines.pre-upgrade-check`, `ai-pipelines.update-dsp-role` | [5.3]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ai-pipelines" >}}) |
-| | `ai-pipelines.post-upgrade-check` | [8.8]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) |
-| Ray | `raycluster.backup` | [5.1]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) |
-| | `raycluster.migrate` | [8.5]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ray" >}}) |
-| Kueue | `kueue` (RHBOK migration) | [5.7]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#kueue" >}}) |
-| Training | `training.verify-workloads` | [8.8]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) |
+| Model serving | `modelserving.serverless-to-raw` | [4]({{< relref "rhoai-2-25-to-3-5/convert-model-serving#serverless" >}}) |
+| | `modelserving.modelmesh-to-raw` | [4]({{< relref "rhoai-2-25-to-3-5/convert-model-serving#modelmesh" >}}) |
+| | `modelserving.hardwareprofiles-ignorelist` | [5.6]({{< relref "rhoai-2-25-to-3-5/remediate-platform#isvc-config" >}}) |
+| | `modelserving.managed-isvc-config` | [8.3]({{< relref "rhoai-2-25-to-3-5/post-upgrade#restore-isvc-config" >}}) |
+| Workbenches | `workbenches.patch-auth-model`, `workbenches.verify-migration` | [8.4]({{< relref "rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) |
+| TrustyAI | `trustyai.metrics`, `trustyai.data` | [5.2]({{< relref "rhoai-2-25-to-3-5/remediate-platform#trustyai" >}}), [8.7]({{< relref "rhoai-2-25-to-3-5/post-upgrade#trustyai" >}}) |
+| | `trustyai.patch-guardrails`, `trustyai.migrate-gorch-otel-exporter` | [8.6]({{< relref "rhoai-2-25-to-3-5/post-upgrade#guardrails" >}}) |
+| | `trustyai.break-gpu-deadlock` | [8.7]({{< relref "rhoai-2-25-to-3-5/post-upgrade#trustyai" >}}) |
+| Llama Stack / OGX | `llamastack.backup` | [5.4]({{< relref "rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}}) |
+| AI Pipelines | `ai-pipelines.pre-upgrade-check`, `ai-pipelines.update-dsp-role` | [5.3]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ai-pipelines" >}}) |
+| | `ai-pipelines.post-upgrade-check` | [8.8]({{< relref "rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) |
+| Ray | `raycluster.backup` | [5.1]({{< relref "rhoai-2-25-to-3-5/remediate-platform#ray-backup" >}}) |
+| | `raycluster.migrate` | [8.5]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ray" >}}) |
+| Kueue | `kueue` (RHBOK migration) | [5.7]({{< relref "rhoai-2-25-to-3-5/remediate-platform#kueue" >}}) |
+| Training | `training.verify-workloads` | [8.8]({{< relref "rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) |
 
 #### Known issue: a declined prompt reports success and exits 0 {#ki-declined-prompt}
 

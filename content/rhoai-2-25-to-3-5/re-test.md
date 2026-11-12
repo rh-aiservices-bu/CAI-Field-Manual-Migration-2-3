@@ -5,13 +5,13 @@ weight: 90
 icon: fa-solid fa-vial
 ---
 
-**Outcome:** a saved `after` record that matches the [Baseline]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline" >}}) everywhere except the differences this page tells you to expect. That before/after pair is your evidence that the migration broke nothing. **Phase 9 of 10 · After upgrade.** Next: [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up" >}}).
+**Outcome:** a saved `after` record that matches the [Baseline]({{< relref "rhoai-2-25-to-3-5/baseline" >}}) everywhere except the differences this page tells you to expect. That before/after pair is your evidence that the migration broke nothing. **Phase 9 of 10 · After upgrade.** Next: [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up" >}}).
 
-[Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade" >}}) proved the *platform* is healthy. This page proves the *workloads* still serve their users. These are smoke tests: does each thing still answer a request?
+[Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade" >}}) proved the *platform* is healthy. This page proves the *workloads* still serve their users. These are smoke tests: does each thing still answer a request?
 
 ## Prerequisites
 
-- [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade" >}}) verification passed.
+- [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade" >}}) verification passed.
 - Your `$BASELINE` directory from Phase 2, and a directory for the after record:
 
 ```sh
@@ -61,7 +61,7 @@ Expected output of the `diff`: differences **only** for models you converted in 
 >   URL:           https://my-serverless-isvc-ml-project-a.apps.…   (new Route)
 ```
 
-A changed completion, or an ISVC that has gone missing, is a regression. Investigate it in [Post-upgrade 8.9]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#model-serving" >}}). If a runtime image was intentionally updated (a predictor restarted onto a newer vLLM), small wording differences can be legitimate.
+A changed completion, or an ISVC that has gone missing, is a regression. Investigate it in [Post-upgrade 8.9]({{< relref "rhoai-2-25-to-3-5/post-upgrade#model-serving" >}}). If a runtime image was intentionally updated (a predictor restarted onto a newer vLLM), small wording differences can be legitimate.
 
 Confirm every ISVC is Ready:
 
@@ -145,7 +145,7 @@ for row in $(oc get notebooks -A --no-headers | awk '{print $1"/"$2}'); do
 done
 ```
 
-Confirm each pod came back with the **`kube-rbac-proxy`** sidecar. This proves [8.4]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) took effect:
+Confirm each pod came back with the **`kube-rbac-proxy`** sidecar. This proves [8.4]({{< relref "rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) took effect:
 
 ```sh
 oc get pods -n <ns> -o jsonpath='{range .items[*]}{.metadata.name}: {range .spec.containers[*]}{.name} {end}{"\n"}{end}'
@@ -185,7 +185,7 @@ ml-project-a/my-workbench -> HTTP 302
 oc get gatewayconfig default-gateway -o jsonpath='{.status.domain}{"\n"}'
 ```
 
-**Workaround.** Use the jsonpath above. If `.status.domain` itself is empty, the Gateway isn't programmed: see [Known issue: stale Istio CRDs]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}).
+**Workaround.** Use the jsonpath above. If `.status.domain` itself is empty, the Gateway isn't programmed: see [Known issue: stale Istio CRDs]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}).
 
 **Tracker.** None.
 
@@ -199,7 +199,7 @@ oc get gatewayconfig default-gateway -o jsonpath='{.status.domain}{"\n"}'
 oc get httproute -n <ns>
 ```
 
-**Workaround.** Wait about 2 minutes. If it persists, confirm that [8.4]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) patched this Notebook.
+**Workaround.** Wait about 2 minutes. If it persists, confirm that [8.4]({{< relref "rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}}) patched this Notebook.
 
 **Tracker.** None.
 
@@ -251,7 +251,7 @@ Expected output:
 ray unchanged
 ```
 
-If a cluster isn't `ready`, re-run the migration scoped to it (inside the pod): `rhai-cli migrate run --migration raycluster.migrate --target-version 3.5.0 --raycluster-namespace <ns>`. Then apply the pod check from [8.5]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ray" >}}).
+If a cluster isn't `ready`, re-run the migration scoped to it (inside the pod): `rhai-cli migrate run --migration raycluster.migrate --target-version 3.5.0 --raycluster-namespace <ns>`. Then apply the pod check from [8.5]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ray" >}}).
 
 #### Known issue: LLM inference returns 502/503 right after the upgrade {#ki-llm-502}
 
@@ -290,4 +290,4 @@ Re-test passes when:
 
 ## Rollback
 
-Read-only phase. Nothing to roll back. A failed probe is a lead for [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade" >}}), not a reason to roll back.
+Read-only phase. Nothing to roll back. A failed probe is a lead for [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade" >}}), not a reason to roll back.

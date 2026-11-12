@@ -5,7 +5,7 @@ weight: 60
 icon: fa-solid fa-laptop-code
 ---
 
-**Outcome:** every custom workbench image is triaged (re-import only, or rebuild), code-server workbenches are on `2025.2`, **every workbench is stopped**, and the notebook lint returns PASS or WARNING. **Phase 6 of 10 · Before upgrade.** Next: [Upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/upgrade" >}}).
+**Outcome:** every custom workbench image is triaged (re-import only, or rebuild), code-server workbenches are on `2025.2`, **every workbench is stopped**, and the notebook lint returns PASS or WARNING. **Phase 6 of 10 · Before upgrade.** Next: [Upgrade]({{< relref "rhoai-2-25-to-3-5/upgrade" >}}).
 
 3.x changes how workbenches **authenticate** (`oauth-proxy` → `kube-rbac-proxy`) and how they're **routed** (OpenShift Routes → Kubernetes Gateway API with path-based URLs). The operator bumps out-of-the-box images, but **custom (BYON) images** and **old tags** need your attention.
 
@@ -14,7 +14,7 @@ icon: fa-solid fa-laptop-code
 
 ## Prerequisites
 
-- [Remediate the platform]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform" >}}) complete.
+- [Remediate the platform]({{< relref "rhoai-2-25-to-3-5/remediate-platform" >}}) complete.
 - **Users have been told** to save their work. Every workbench ends this phase **Stopped**. If one can't reach Running, stop or delete it.
 - Users know that **workbench URLs change** after the upgrade. They'll get new ones from the dashboard, and old bookmarks break.
 - Owners of custom images are available. **Red Hat doesn't rebuild custom images. Rebuilding is the application owner's job.**
@@ -43,7 +43,7 @@ The tag alone doesn't tell you which case you're in:
 
 | The image is… | What breaks | What to do |
 |---------------|-------------|------------|
-| Built ***FROM*** the `2025.2` workbench base | Nothing. Gateway `NB_PREFIX` routing and auth are already built in. | **Re-import** (6.3), then apply the post-upgrade auth patch ([8.4]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}})). **No rebuild.** |
+| Built ***FROM*** the `2025.2` workbench base | Nothing. Gateway `NB_PREFIX` routing and auth are already built in. | **Re-import** (6.3), then apply the post-upgrade auth patch ([8.4]({{< relref "rhoai-2-25-to-3-5/post-upgrade#workbench-auth" >}})). **No rebuild.** |
 | Only *tagged* `2025.2`, on an older base | The tag is cosmetic. It still assumes 2.x routing. | **Full rebuild** (below). |
 | Anything older | Auth and routing | **Full rebuild** (below). |
 

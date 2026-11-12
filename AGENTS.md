@@ -14,12 +14,12 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 
 No output = clean. Build failure or any other WARN = not done. Fix and re-run.
 Note the root 404 is expected: with a path in baseURL the dev server serves at
-`http://localhost:1313/rhoai-2.25-3.5-migration-field-guide/`.
+`http://localhost:1313/CAI-Field-Manual-Migration-2-3/`.
 
 ## Content rules
 
-- Manuals live in `content/field-manual/<manual>/`. The one manual is
-  `content/field-manual/rhoai-2-25-to-3-5/` (one page per migration phase).
+- The one manual lives at `content/rhoai-2-25-to-3-5/` (one page per
+  migration phase).
 - Author doctrine: read `Docs/field-manual-conventions.md` before
   writing manual pages. Six conventions: outcome first; prerequisites stated;
   every command followed by a verify step with literal expected output;

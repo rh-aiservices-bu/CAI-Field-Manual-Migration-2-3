@@ -1,4 +1,4 @@
-Rendered site: https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/
+Rendered site: https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/
 
 # CAI Field Manual
 
@@ -13,8 +13,8 @@ theme (`github.com/pgsty/oink`).
 
 ## How to consume it
 
-Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/field-manual/rhoai-2-25-to-3-5/)
-  (`content/field-manual/rhoai-2-25-to-3-5/`) — the in-place OpenShift AI
+Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/rhoai-2-25-to-3-5/)
+  (`content/rhoai-2-25-to-3-5/`) — the in-place OpenShift AI
   2.25.10+ → 3.5 migration, one page per phase (pre-flight → baseline →
   assess → convert model serving → remediate → workbench images → upgrade →
   post-upgrade → re-test → clean up) and a *Things that broke* symptom index.
@@ -41,18 +41,18 @@ Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/r
   choose **"Feed it to my AI Agent"** — it opens a copy-ready prompt for
   Claude Code or Codex: the agent clones the repo, reads the README and
   the code, reports what the manual can do, and asks what to do next.
-- Whole site as [`llms.txt`](https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/llms.txt).
+- Whole site as [`llms.txt`](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/llms.txt).
 - The markdown, `llms.txt`, and print outputs carry every display option
   labeled (`Axis: Option`) — only the interactive HTML filters content, so
   agents always see all variants.
 
 ## Report issues, propose changes
 
-- **Issues** — file a [GitHub Issue](https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide/issues)
+- **Issues** — file a [GitHub Issue](https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3/issues)
   with the page URL (or the `content/` path) and what you hit.
   *(Labels and triage conventions TBD for now.)*
 - **Changes** — PRs to `main` are welcome. Content lives in
-  `content/field-manual/rhoai-2-25-to-3-5/`. Run the publication gate
+  `content/rhoai-2-25-to-3-5/`. Run the publication gate
   (below) before opening a PR. Merges to `main` deploy automatically via
   GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions**
   (one-time admin step).
@@ -64,12 +64,12 @@ Where things live:
   `status.specific` / `status.neutral` phrases for the selector's status
   line (`{value}` = the option label) — no customize fields (the
   customize shortcodes remain but are unused),
-  `docs_section: field-manual` (drives the llms.txt Documentation index and
+  `docs_section: rhoai-2-25-to-3-5` (drives the llms.txt Documentation index and
   the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
   the whole site tree)
 - `data/home.yaml` — landing page sections (hero, cards, cta)
 - `content/_index.md` — home page front matter
-- `content/field-manual/rhoai-2-25-to-3-5/` — the migration manual
+- `content/rhoai-2-25-to-3-5/` — the migration manual
 - `Docs/field-manual-conventions.md` — the author doctrine (the six
   conventions every page follows)
 - `layouts/_partials/google_analytics.html` — GA4 partial (the theme's
@@ -130,14 +130,14 @@ Prerequisites:
 - Go ≥ 1.27 — no Node.js needed (Hugo modules fetch the theme)
 
 ```sh
-git clone https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide.git
-cd rhoai-2.25-3.5-migration-field-guide
+git clone https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3.git
+cd CAI-Field-Manual-Migration-2-3
 hugo server
 ```
 
 With a path in `baseURL`
-(`https://rh-aiservices-bu.github.io/rhoai-2.25-3.5-migration-field-guide/`), the dev
-server serves at `http://localhost:1313/rhoai-2.25-3.5-migration-field-guide/` — a 404
+(`https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/`), the dev
+server serves at `http://localhost:1313/CAI-Field-Manual-Migration-2-3/` — a 404
 at the root is expected, not a broken build.
 
 ### Publication gate

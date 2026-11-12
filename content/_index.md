@@ -1,6 +1,6 @@
 ---
 title: CAI Field Manual
-description: A working skeleton for the field-manual example site.
+description: Field manuals for Red Hat OpenShift AI — every step verified, every known break documented where the reader hits it.
 # Every branch of the tree renders expanded on every page: both sidebar tree
 # walkers honor sidebar_expanded as a per-section force-expand, and Home's
 # cascade sets it for the whole site. Without it the walkers render each
