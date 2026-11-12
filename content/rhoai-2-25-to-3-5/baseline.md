@@ -5,13 +5,13 @@ weight: 20
 icon: fa-solid fa-camera
 ---
 
-**Outcome:** a saved, timestamped record of what works *today*: every InferenceService's mode and response, every workbench's HTTP status, every DSPA's health, every Ray cluster's state, and every guardrails orchestrator's backend health. [Re-test]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test" >}}) re-runs the same probes and diffs against this record. **Phase 2 of 10 · Before upgrade.** Next: [Assess]({{< relref "/field-manual/rhoai-2-25-to-3-5/assess" >}}).
+**Outcome:** a saved, timestamped record of what works *today*: every InferenceService's mode and response, every workbench's HTTP status, every DSPA's health, every Ray cluster's state, and every guardrails orchestrator's backend health. [Re-test]({{< relref "rhoai-2-25-to-3-5/re-test" >}}) re-runs the same probes and diffs against this record. **Phase 2 of 10 · Before upgrade.** Next: [Assess]({{< relref "rhoai-2-25-to-3-5/assess" >}}).
 
 A migration without a baseline is just hope. Without one, you cannot tell whether something failed because of the migration or was already broken. This phase has no equivalent in the component-organized reference guide, and it is the cheapest insurance in the whole manual.
 
 ## Prerequisites
 
-- [Pre-flight]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight" >}}) complete. You are logged in as a `cluster-admin` user in `bash`.
+- [Pre-flight]({{< relref "rhoai-2-25-to-3-5/pre-flight" >}}) complete. You are logged in as a `cluster-admin` user in `bash`.
 - A local directory to hold the record:
 
 ```sh
@@ -55,7 +55,7 @@ ml-project-c   my-modelmesh-isvc   ModelMesh       grpc://modelmesh-serving.ml-p
 ...
 ```
 
-**Record the deployment mode of every ISVC.** The `Serverless` and `ModelMesh` rows are the workloads you convert in [Convert model serving]({{< relref "/field-manual/rhoai-2-25-to-3-5/convert-model-serving" >}}). If anything is already missing or broken, write it down *now*, so the migration doesn't get blamed for it later.
+**Record the deployment mode of every ISVC.** The `Serverless` and `ModelMesh` rows are the workloads you convert in [Convert model serving]({{< relref "rhoai-2-25-to-3-5/convert-model-serving" >}}). If anything is already missing or broken, write it down *now*, so the migration doesn't get blamed for it later.
 
 ### 2.2 Inference-test each model {#inference-probe}
 
@@ -144,7 +144,7 @@ ml-project-d   raycluster-a  2         2           ready
 
 ### 2.5 Baseline TrustyAI and Guardrails
 
-[Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#guardrails" >}}) checks that each `GuardrailsOrchestrator` reports its services `HEALTHY`. Capture that state now. An orchestrator pointing at a backend that never existed reports `UNKNOWN` both before and after, and without a baseline you cannot tell that apart from a migration regression.
+[Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade#guardrails" >}}) checks that each `GuardrailsOrchestrator` reports its services `HEALTHY`. Capture that state now. An orchestrator pointing at a backend that never existed reports `UNKNOWN` both before and after, and without a baseline you cannot tell that apart from a migration regression.
 
 ```sh
 {
@@ -186,7 +186,7 @@ ray ok
 trustyai ok
 ```
 
-`EMPTY` is correct for a workload type your inventory shows you don't run (for example, no Ray clusters means `ray EMPTY`). `EMPTY` for `inventory` is not: re-run 2.1. Keep the whole `$BASELINE` directory. It is your evidence in [Re-test]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test" >}}).
+`EMPTY` is correct for a workload type your inventory shows you don't run (for example, no Ray clusters means `ray EMPTY`). `EMPTY` for `inventory` is not: re-run 2.1. Keep the whole `$BASELINE` directory. It is your evidence in [Re-test]({{< relref "rhoai-2-25-to-3-5/re-test" >}}).
 
 ## Rollback
 

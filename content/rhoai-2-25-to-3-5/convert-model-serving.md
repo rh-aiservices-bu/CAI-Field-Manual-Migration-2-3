@@ -5,18 +5,18 @@ weight: 40
 icon: fa-solid fa-right-left
 ---
 
-**Outcome:** every InferenceService on the cluster is `RawDeployment` and `Ready=True`, no multi-model ServingRuntime is left, and the KServe lint shows no critical workload findings. That makes it safe to disable Serverless and ModelMesh in Phase 5. **Phase 4 of 10 · Before upgrade.** Next: [Remediate the platform]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform" >}}).
+**Outcome:** every InferenceService on the cluster is `RawDeployment` and `Ready=True`, no multi-model ServingRuntime is left, and the KServe lint shows no critical workload findings. That makes it safe to disable Serverless and ModelMesh in Phase 5. **Phase 4 of 10 · Before upgrade.** Next: [Remediate the platform]({{< relref "rhoai-2-25-to-3-5/remediate-platform" >}}).
 
 This is the core of the migration. 3.5 removes **Serverless** and **ModelMesh**, and RawDeployment (displayed as **`Standard`** after the upgrade) is the only serving mode left. **Convert first; disable later.** If you disable a serving mode while a model still depends on it, the model stops serving.
 
 > [!TIP]
-> **Already RawDeployment-only?** If your [Baseline]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline" >}}) inventory shows no `Serverless` or `ModelMesh` rows and you run no `LLMInferenceService`, run the check in [4.1](#enumerate) to confirm, then skip to [Remediate the platform]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform" >}}).
+> **Already RawDeployment-only?** If your [Baseline]({{< relref "rhoai-2-25-to-3-5/baseline" >}}) inventory shows no `Serverless` or `ModelMesh` rows and you run no `LLMInferenceService`, run the check in [4.1](#enumerate) to confirm, then skip to [Remediate the platform]({{< relref "rhoai-2-25-to-3-5/remediate-platform" >}}).
 
 **If you don't convert:** after the operator upgrade, every Serverless and ModelMesh ISVC returns **HTTP 503**, and `LLMInferenceService` workloads fail without the new authentication config.
 
 ## Prerequisites
 
-- [Assess]({{< relref "/field-manual/rhoai-2-25-to-3-5/assess" >}}) complete. You have a shell in `rhai-cli-0` (in-pod commands are marked **inside the pod**) and a workstation shell.
+- [Assess]({{< relref "rhoai-2-25-to-3-5/assess" >}}) complete. You have a shell in `rhai-cli-0` (in-pod commands are marked **inside the pod**) and a workstation shell.
 - Project access to every namespace that holds an `InferenceService` or `LLMInferenceService`.
 - **You have audited the cluster for other consumers of OpenShift Service Mesh v2** and confirmed they can be migrated or removed.
 
@@ -67,7 +67,7 @@ ml-project-c	my-modelmesh-isvc	ModelMesh
 
 ### 4.2 Convert Serverless InferenceServices {#serverless}
 
-`modelserving.serverless-to-raw` works **across the whole cluster** in one run. It keeps each ISVC's name and handles the ServiceAccount, Role, and RoleBinding auth resources for you. It asks a single `Proceed with conversion? [y/N]` question. Answer `y` (see [Known issue: a declined prompt reports success]({{< relref "/field-manual/rhoai-2-25-to-3-5/assess#ki-declined-prompt" >}})).
+`modelserving.serverless-to-raw` works **across the whole cluster** in one run. It keeps each ISVC's name and handles the ServiceAccount, Role, and RoleBinding auth resources for you. It asks a single `Proceed with conversion? [y/N]` question. Answer `y` (see [Known issue: a declined prompt reports success]({{< relref "rhoai-2-25-to-3-5/assess#ki-declined-prompt" >}})).
 
 **Inside the pod**, in a `tmux`/`screen` session:
 
@@ -111,7 +111,7 @@ my-serverless-isvc  RawDeployment    True
 ```
 
 > [!NOTE]
-> **Converted Serverless models get a new endpoint.** Re-run the [baseline inference probe]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline#inference-probe" >}}) and record each new `.status.url`. These are the only model URLs you'll need to publish to consumers. Models that were already RawDeployment keep theirs.
+> **Converted Serverless models get a new endpoint.** Re-run the [baseline inference probe]({{< relref "rhoai-2-25-to-3-5/baseline#inference-probe" >}}) and record each new `.status.url`. These are the only model URLs you'll need to publish to consumers. Models that were already RawDeployment keep theirs.
 
 #### Known issue: recreated ISVC sits `READY=False` for minutes {#ki-slow-ready}
 
@@ -337,7 +337,7 @@ Then look for orphaned `ksvc` and `virtualservice` objects.
 oc new-project kuadrant-system
 ```
 
-Install **Red Hat Connectivity Link** into `kuadrant-system` through OLM (an OperatorGroup and Subscription in that namespace), the same pattern as cert-manager in [Pre-flight]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight" >}}). Look up the package and channel with `oc get packagemanifest -n openshift-marketplace | grep -i rhcl`. See [Installing Connectivity Link on OpenShift](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.0/html/installing_connectivity_link_on_openshift/index).
+Install **Red Hat Connectivity Link** into `kuadrant-system` through OLM (an OperatorGroup and Subscription in that namespace), the same pattern as cert-manager in [Pre-flight]({{< relref "rhoai-2-25-to-3-5/pre-flight" >}}). Look up the package and channel with `oc get packagemanifest -n openshift-marketplace | grep -i rhcl`. See [Installing Connectivity Link on OpenShift](https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.0/html/installing_connectivity_link_on_openshift/index).
 
 Create the Kuadrant and Authorino resources:
 
@@ -464,4 +464,4 @@ The cluster is still on 2.25, Serverless and ModelMesh are still installed, and 
 
 - **One ISVC misbehaves after conversion:** delete it and re-apply its original object from `./serving-pre-convert-*.yaml`. Strip `status`, `resourceVersion`, `uid`, and `creationTimestamp` first. The webhook allows this because it creates a new object rather than changing the mode of an existing one.
 - **A runtime was deleted by mistake:** re-apply it from the same file.
-- **Everything:** restore from the [Pre-flight backup]({{< relref "/field-manual/rhoai-2-25-to-3-5/pre-flight#backup" >}}).
+- **Everything:** restore from the [Pre-flight backup]({{< relref "rhoai-2-25-to-3-5/pre-flight#backup" >}}).

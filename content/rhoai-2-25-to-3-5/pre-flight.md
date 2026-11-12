@@ -5,7 +5,7 @@ weight: 10
 icon: fa-solid fa-plane-departure
 ---
 
-**Outcome:** the cluster meets the 3.5 prerequisites, nothing will revert your changes behind your back, cert-manager is installed, and a **verified, restorable backup** exists. **Phase 1 of 10 · Prepare.** Next: [Baseline]({{< relref "/field-manual/rhoai-2-25-to-3-5/baseline" >}}).
+**Outcome:** the cluster meets the 3.5 prerequisites, nothing will revert your changes behind your back, cert-manager is installed, and a **verified, restorable backup** exists. **Phase 1 of 10 · Prepare.** Next: [Baseline]({{< relref "rhoai-2-25-to-3-5/baseline" >}}).
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ icon: fa-solid fa-plane-departure
 - A maintenance window agreed with your users. OpenShift AI does not support zero-downtime upgrades.
 
 > [!WARNING]
-> **Run every snippet in this manual with `bash`, not `zsh`.** The snippets assume bash word-splitting. Under `zsh` (the macOS default), an unquoted `for c in $VAR; do …` runs **once with the whole string** instead of once per item, which quietly defeats the Istio-CRD safety check in [Post-upgrade]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}), among others. Start a `bash` shell first, or wrap multi-line blocks in `bash -c '…'`. (`for x in $(cmd)` works in both shells.)
+> **Run every snippet in this manual with `bash`, not `zsh`.** The snippets assume bash word-splitting. Under `zsh` (the macOS default), an unquoted `for c in $VAR; do …` runs **once with the whole string** instead of once per item, which quietly defeats the Istio-CRD safety check in [Post-upgrade]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}), among others. Start a `bash` shell first, or wrap multi-line blocks in `bash -c '…'`. (`for x in $(cmd)` works in both shells.)
 
 Log in and confirm who you are:
 
@@ -76,7 +76,7 @@ Expected output:
 0
 ```
 
-While the reconciler is paused, you apply this manual's changes directly with `oc`. Record each one so you can commit the 3.x state to Git in [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}}) **before** you turn sync back on.
+While the reconciler is paused, you apply this manual's changes directly with `oc`. Record each one so you can commit the 3.x state to Git in [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}}) **before** you turn sync back on.
 {{< /variant >}}
 
 {{< variant deploy standard >}}
@@ -137,7 +137,7 @@ Expected output (2.25.10 or a later 2.25.z):
 clusterserviceversion.operators.coreos.com/rhods-operator.2.25.10
 ```
 
-**Kueue management state.** Before the upgrade it must be `Removed` or `Unmanaged`. You change it in [Remediate the platform]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#kueue" >}}). For now, just record the current state:
+**Kueue management state.** Before the upgrade it must be `Removed` or `Unmanaged`. You change it in [Remediate the platform]({{< relref "rhoai-2-25-to-3-5/remediate-platform#kueue" >}}). For now, just record the current state:
 
 ```sh
 oc get datasciencecluster -A -o jsonpath='{.items[0].spec.components.kueue.managementState}{"\n"}'
@@ -170,7 +170,7 @@ Managed
 
 ### 1.4 Notify users
 
-Tell your users the plan and the downtime window. Also warn them that **dashboard and workbench URLs change** (the Gateway API move) and that **Llama Stack data is not carried across** (see [Remediate the platform]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}})).
+Tell your users the plan and the downtime window. Also warn them that **dashboard and workbench URLs change** (the Gateway API move) and that **Llama Stack data is not carried across** (see [Remediate the platform]({{< relref "rhoai-2-25-to-3-5/remediate-platform#delete-llamastack" >}})).
 
 ### 1.5 Install the cert-manager Operator for Red Hat OpenShift
 
@@ -249,7 +249,7 @@ rhoai-pre-migration     Completed
 ```
 
 > [!NOTE]
-> The component backups later in this manual (RayClusters, TrustyAI, AI Pipelines in [Phase 5]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform" >}})) protect individual components' state during the flips. They do **not** replace the full-cluster backup.
+> The component backups later in this manual (RayClusters, TrustyAI, AI Pipelines in [Phase 5]({{< relref "rhoai-2-25-to-3-5/remediate-platform" >}})) protect individual components' state during the flips. They do **not** replace the full-cluster backup.
 
 ## Verification
 
@@ -260,14 +260,14 @@ Pre-flight is done when all of these hold:
 - OpenShift is ≥ 4.19.9 and OpenShift AI is ≥ 2.25.10.
 - The cert-manager CSV reports `Succeeded`.
 - A full-cluster backup exists **and you have tested restoring it**.
-- A proactive support case is open ([overview]({{< relref "/field-manual/rhoai-2-25-to-3-5#open-a-proactive-support-case" >}})).
+- A proactive support case is open ([overview]({{< relref "rhoai-2-25-to-3-5#open-a-proactive-support-case" >}})).
 
 ## Rollback
 
 Nothing in this phase touches OpenShift AI workloads.
 
 {{< variant deploy gitops >}}
-- **Re-enable GitOps** only if you are abandoning the migration *before* making any changes. Restore each Application's `syncPolicy.automated` from Git (or re-apply the Application manifest). If you have already made migration changes, update Git first (see [Clean up]({{< relref "/field-manual/rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}})), or the next sync reverts them.
+- **Re-enable GitOps** only if you are abandoning the migration *before* making any changes. Restore each Application's `syncPolicy.automated` from Git (or re-apply the Application manifest). If you have already made migration changes, update Git first (see [Clean up]({{< relref "rhoai-2-25-to-3-5/clean-up#re-enable-gitops" >}})), or the next sync reverts them.
 {{< /variant >}}
 
 - **cert-manager** is a 3.x prerequisite and is harmless on 2.25. Leave it installed.

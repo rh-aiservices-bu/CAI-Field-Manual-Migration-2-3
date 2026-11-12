@@ -13,8 +13,8 @@ theme (`github.com/pgsty/oink`).
 
 ## How to consume it
 
-Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/field-manual/rhoai-2-25-to-3-5/)
-  (`content/field-manual/rhoai-2-25-to-3-5/`) — the in-place OpenShift AI
+Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/rhoai-2-25-to-3-5/)
+  (`content/rhoai-2-25-to-3-5/`) — the in-place OpenShift AI
   2.25.10+ → 3.5 migration, one page per phase (pre-flight → baseline →
   assess → convert model serving → remediate → workbench images → upgrade →
   post-upgrade → re-test → clean up) and a *Things that broke* symptom index.
@@ -52,7 +52,7 @@ Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/C
   with the page URL (or the `content/` path) and what you hit.
   *(Labels and triage conventions TBD for now.)*
 - **Changes** — PRs to `main` are welcome. Content lives in
-  `content/field-manual/rhoai-2-25-to-3-5/`. Run the publication gate
+  `content/rhoai-2-25-to-3-5/`. Run the publication gate
   (below) before opening a PR. Merges to `main` deploy automatically via
   GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions**
   (one-time admin step).
@@ -64,12 +64,12 @@ Where things live:
   `status.specific` / `status.neutral` phrases for the selector's status
   line (`{value}` = the option label) — no customize fields (the
   customize shortcodes remain but are unused),
-  `docs_section: field-manual` (drives the llms.txt Documentation index and
+  `docs_section: rhoai-2-25-to-3-5` (drives the llms.txt Documentation index and
   the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
   the whole site tree)
 - `data/home.yaml` — landing page sections (hero, cards, cta)
 - `content/_index.md` — home page front matter
-- `content/field-manual/rhoai-2-25-to-3-5/` — the migration manual
+- `content/rhoai-2-25-to-3-5/` — the migration manual
 - `Docs/field-manual-conventions.md` — the author doctrine (the six
   conventions every page follows)
 - `layouts/_partials/google_analytics.html` — GA4 partial (the theme's

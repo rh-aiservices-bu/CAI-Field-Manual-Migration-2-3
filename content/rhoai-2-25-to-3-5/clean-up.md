@@ -9,8 +9,8 @@ icon: fa-solid fa-broom
 
 ## Prerequisites
 
-- [Re-test]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test" >}}) passed, and the evidence archive is saved.
-- The [AI Pipelines post-upgrade check]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) has run. It needed the PVC.
+- [Re-test]({{< relref "rhoai-2-25-to-3-5/re-test" >}}) passed, and the evidence archive is saved.
+- The [AI Pipelines post-upgrade check]({{< relref "rhoai-2-25-to-3-5/post-upgrade#non-core" >}}) has run. It needed the PVC.
 
 ## Procedure
 
@@ -75,9 +75,9 @@ Expected output:
 (no output)
 ```
 
-If anything is listed, remove it as in [5.9]({{< relref "/field-manual/rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}), then run `oc delete namespace knative-serving`. **Never touch `servicemeshoperator3`.**
+If anything is listed, remove it as in [5.9]({{< relref "rhoai-2-25-to-3-5/remediate-platform#uninstall-operators" >}}), then run `oc delete namespace knative-serving`. **Never touch `servicemeshoperator3`.**
 
-Optionally, remove the harmless `*.maistra.io` CRDs. Unlike the `*.istio.io` ones removed in [8.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}), they hold no CRs and don't block the Gateway:
+Optionally, remove the harmless `*.maistra.io` CRDs. Unlike the `*.istio.io` ones removed in [8.2]({{< relref "rhoai-2-25-to-3-5/post-upgrade#ki-stale-istio-crds" >}}), they hold no CRs and don't block the Gateway:
 
 ```sh
 oc get crd -l maistra-version -o custom-columns=NAME:.metadata.name,VER:.metadata.labels.maistra-version
@@ -86,7 +86,7 @@ oc get crd -l maistra-version -o custom-columns=NAME:.metadata.name,VER:.metadat
 ### 10.5 Tell users what changed
 
 - **New dashboard URL and new workbench URLs** (Gateway API). Their 2.x URLs no longer resolve.
-- **Model endpoints:** publish new URLs **only** for models you converted from Serverless or ModelMesh. Models that were already RawDeployment keep their Route and URL ([9.2]({{< relref "/field-manual/rhoai-2-25-to-3-5/re-test#what-changes-for-a-standard-model" >}})).
+- **Model endpoints:** publish new URLs **only** for models you converted from Serverless or ModelMesh. Models that were already RawDeployment keep their Route and URL ([9.2]({{< relref "rhoai-2-25-to-3-5/re-test#what-changes-for-a-standard-model" >}})).
 - **Renamed dashboard navigation:** **AI hub → Models** (catalog) and **Settings → Model registry settings**.
 - **Llama Stack is now OGX:** owners recreate their servers as `OGXServer`.
 - **Runbooks:** remove references to Serverless and ModelMesh, and note that `RawDeployment` now shows as `Standard`.

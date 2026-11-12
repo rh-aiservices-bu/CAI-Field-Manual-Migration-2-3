@@ -1,12 +1,12 @@
 {{- /* Chat assistant runtime (static/js/chat.js). The bundle URL is injected
      because relLangURL must resolve here, not in JS: the chat page's
-     whole-manual context is the field-manual LLMSFULL output, which sits
+     whole-manual context is the manual's LLMSFULL output, which sits
      under the site's base path on GitHub Pages.
 
      The script guards itself: with no #td-chat mount it only installs the
      Chat-link source forwarding, so print bundles and every other page stay
      inert. */ -}}
-<script>window.__TD_CHAT__ = { llmsFull: "{{ "field-manual/llms-full.txt" | relLangURL }}" };</script>
+<script>window.__TD_CHAT__ = { llmsFull: "{{ "rhoai-2-25-to-3-5/llms-full.txt" | relLangURL }}" };</script>
 <script src="{{ "js/chat.js" | relLangURL }}" defer></script>
 {{- /* "Feed it to my AI Agent" page action / palette row modal
      (static/js/agent-setup.js). The repo is injected the same way

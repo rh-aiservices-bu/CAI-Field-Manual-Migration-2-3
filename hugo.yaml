@@ -49,7 +49,7 @@ outputs:
   page: [HTML, markdown]
   # LLMSFULL is enabled per section in front matter: the theme emits it only
   # for a top-level section and warns for nested ones, so a site-wide section
-  # output trips /field-manual/hello-world/. content/field-manual/_index.md
+  # output trips every nested section. content/rhoai-2-25-to-3-5/_index.md
   # opts in; the chat page reads that bundle as its whole-manual context.
   section: [HTML, RSS, print, markdown]
 
@@ -75,11 +75,11 @@ params:
     section_index: cards
     blog_index: cards
     sidebar_menu_foldable: true
-    # Left nav shows the whole site tree from Home: the three top-level
-    # entries (field manual, chat, why this approach) each expand in place,
-    # instead of the root switcher swapping one section's tree at a time.
-    # Chat is currently hidden (draft: true on content/chat/_index.md until the
-    # section is functional), so it does not appear in the tree for now.
+    # Left nav shows the whole site tree from Home: the manual's overview
+    # row expands in place, instead of the root switcher swapping one
+    # section's tree at a time. Chat is currently hidden (draft: true on
+    # content/chat/_index.md until the section is functional), so the tree
+    # has the manual plus Home for now.
     docs_sidebar_root: home
     sidebar_root_menu: false
     # Numbered workshop-chrome nav (B): CSS counters give the top level "N."
@@ -87,7 +87,7 @@ params:
     # `all`/`groups` would paint marks next to the numbers; marks stay in
     # landing cards, page headers, and the navbar.
     sidebar_icon_policy: none
-    docs_section: field-manual
+    docs_section: rhoai-2-25-to-3-5
     share: [claude, chatgpt, linkedin, email, copy]
     page_context_menu:
       assistant_links: true

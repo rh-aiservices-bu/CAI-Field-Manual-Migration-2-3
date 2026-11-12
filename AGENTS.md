@@ -18,8 +18,8 @@ Note the root 404 is expected: with a path in baseURL the dev server serves at
 
 ## Content rules
 
-- Manuals live in `content/field-manual/<manual>/`. The one manual is
-  `content/field-manual/rhoai-2-25-to-3-5/` (one page per migration phase).
+- The one manual lives at `content/rhoai-2-25-to-3-5/` (one page per
+  migration phase).
 - Author doctrine: read `Docs/field-manual-conventions.md` before
   writing manual pages. Six conventions: outcome first; prerequisites stated;
   every command followed by a verify step with literal expected output;

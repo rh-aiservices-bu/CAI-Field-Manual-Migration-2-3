@@ -5,7 +5,7 @@ icon: fa-solid fa-compass
 weight: 10
 ---
 
-Field manuals here are written against six conventions. Each one below states why it exists, what a reader loses when a manual skips it, and the rule itself. The [RHOAI 2.25 → 3.5 migration manual](../content/field-manual/rhoai-2-25-to-3-5/) is the working exemplar.
+Field manuals here are written against six conventions. Each one below states why it exists, what a reader loses when a manual skips it, and the rule itself. The [RHOAI 2.25 → 3.5 migration manual](../content/rhoai-2-25-to-3-5/) is the working exemplar.
 
 ## Chronological information architecture
 
