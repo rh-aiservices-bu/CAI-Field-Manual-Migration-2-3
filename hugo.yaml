@@ -78,6 +78,8 @@ params:
     # Left nav shows the whole site tree from Home: the three top-level
     # entries (field manual, chat, why this approach) each expand in place,
     # instead of the root switcher swapping one section's tree at a time.
+    # Chat is currently hidden (draft: true on content/chat/_index.md until the
+    # section is functional), so it does not appear in the tree for now.
     docs_sidebar_root: home
     sidebar_root_menu: false
     # Numbered workshop-chrome nav (B): CSS counters give the top level "N."
@@ -139,14 +141,19 @@ params:
 
 # Site header navigation. oink renders .Site.Menus.main in the navbar center
 # zone and the home mobile drawer; the entry's page supplies the icon, and
-# llms.txt lists it under Site index. Field Manual stays reachable through the
-# landing cards and the sidebar, so Chat is the only entry for now.
+# llms.txt lists it under Site index. Chat is not functional yet, so it is
+# hidden from the site: the menu entry below is commented out, the Chat card
+# in data/home.yaml is commented out, and content/chat/_index.md carries
+# draft: true. Field Manual stays reachable through the landing cards and
+# the sidebar; re-enabling Chat means undoing those three toggles.
 menus:
-  main:
-    - identifier: chat
-      name: Chat
-      pageRef: /chat
-      weight: 30
+  # `main: []` stays: with the only entry commented out, a bare `main:` key
+  # decodes as null and fails the config load. Put re-enabled entries under it.
+  main: []
+  # - identifier: chat
+  #   name: Chat
+  #   pageRef: /chat
+  #   weight: 30
 
 module:
   imports:

@@ -24,10 +24,10 @@ cards:
       desc: "A symptom index: match what you see, then jump to the fix on the page where it happens."
       icon: fa-solid fa-triangle-exclamation
       url: field-manual/rhoai-2-25-to-3-5/things-that-broke/
-    - title: Chat
-      desc: "Ask questions about the migration. The assistant answers from this manual."
-      icon: fa-solid fa-comments
-      url: chat/
+    # - title: Chat
+    #   desc: "Ask questions about the migration. The assistant answers from this manual."
+    #   icon: fa-solid fa-comments
+    #   url: chat/
 
 cta:
   title: "We want your feedback."
