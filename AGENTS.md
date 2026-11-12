@@ -14,7 +14,7 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 
 No output = clean. Build failure or any other WARN = not done. Fix and re-run.
 Note the root 404 is expected: with a path in baseURL the dev server serves at
-`http://localhost:1313/CAI-Field-Manual-prototype/`.
+`http://localhost:1313/rhoai-2.25-3.5-migration-field-guide/`.
 
 ## Content rules
 

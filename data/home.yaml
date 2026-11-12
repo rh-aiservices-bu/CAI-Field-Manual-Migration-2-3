@@ -33,7 +33,7 @@ cta:
   title: "We want your feedback."
   text: "Report issues here"
   label: Github Issues
-  url: https://github.com/rh-aiservices-bu/CAI-Field-Manual-prototype/issues
+  url: https://github.com/rh-aiservices-bu/rhoai-2.25-3.5-migration-field-guide/issues
   style: primary
 
 timeline:
@@ -41,19 +41,15 @@ timeline:
   title: Migrate workloads off a component before you remove it
   items:
     - date: Prepare
-      icon: fa-solid fa-plane-departure
       title: Pre-flight, baseline, assess
       desc: Confirm prerequisites, take a verified backup, record what works today, and run the rhai-cli assessment.
     - date: Before upgrade
-      icon: fa-solid fa-right-left
       title: Convert, remediate, stop workbenches
       desc: Move models to RawDeployment, back up stateful components, disable removed components, triage workbench images.
     - date: Upgrade
-      icon: fa-solid fa-circle-up
       title: Switch channel and approve
       desc: support-required-upgrade-3.5, then JobSet, then stable-3.5. From here the only rollback is the backup.
     - date: After upgrade
-      icon: fa-solid fa-list-check
       title: Verify, re-test, clean up
       desc: Clear the gates, get the Gateway programmed, migrate workbenches and Ray, and diff against the baseline.
 
