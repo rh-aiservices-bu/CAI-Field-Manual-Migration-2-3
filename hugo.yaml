@@ -157,7 +157,12 @@ menus:
 
 module:
   imports:
-    - path: github.com/pgsty/oink
+    - path: github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
+      # Pinned to Shell commit 1f1471c74947 on main; bump by editing this hash.
+      # Chrome defaults (logo, offline_search, copyright, footer_center_info,
+      # ui incl. docs_section/docs_sidebar_root) live in the Shell module's
+      # hugo.yaml and are deep-merged; site values win on conflict.
+      version: 1f1471c74947
   hugoVersion:
     extended: true
     min: 0.168.0
