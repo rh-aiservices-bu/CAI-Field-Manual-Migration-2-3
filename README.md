@@ -75,12 +75,13 @@ Where things live:
 - `layouts/_partials/google_analytics.html` — GA4 partial (the theme's
   head.html calls it in production)
 - `layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
-  `layouts/_partials/pager-state.html` — pinned copies of the oink v1.4.0
-  files, each headed by a provenance comment naming its one deliberate change
-  (page-top selector call; Home promoted to the tree's top level with a
-  small-screen Home row; pager rooted at the page's own section instead of
-  the site root). Re-diff all three against
-  `~/go/pkg/mod/github.com/pgsty/oink@v<ver>/` on a theme bump.
+  `layouts/_partials/pager-state.html`, `layouts/_partials/actions/page-urls.html`
+  — pinned copies of the oink v1.4.0 files, each headed by a provenance comment
+  naming its one deliberate change (page-top selector call; Home promoted to
+  the tree's top level with a small-screen Home row; pager rooted at the
+  page's own section instead of the site root; leaf-bundle `createChild` fix
+  — parent the target once when `LogicalName == "index.md"`). Re-diff all
+  against `~/go/pkg/mod/github.com/pgsty/oink@v<ver>/` on a theme bump.
 - `layouts/_partials/td-variant-selector.html` +
   `layouts/_partials/hooks/head-end.html` — the page-top selector and the
   pre-paint persistence runtime (config blob, filter CSS). The theme ships

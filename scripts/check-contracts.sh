@@ -21,6 +21,14 @@ pages=0
 labels=0
 tokens=0
 
+# Manual section id comes from hugo.yaml so the script does not hardcode one
+# repo's directory. Fall back to the historical value for repos that have not
+# yet moved to the single-manual layout.
+manual_section=$(sed -n 's/^[[:space:]]*docs_section:[[:space:]]*//p' hugo.yaml | tr -d '"' | tr -d "'" | xargs)
+if [ -z "$manual_section" ]; then
+    manual_section="rhoai-2-25-to-3-5"
+fi
+
 # 1. customize token ids: declared vs used -------------------------------------
 declared_tokens=$(sed -n 's/.*- { id: \([a-z_]*\),.*/\1/p' hugo.yaml | sort -u)
 used_tokens=$(grep -rhoE '\{\{< customize [a-z_]+ >\}\}' content/ | awk '{print $3}' | sort -u)
@@ -57,7 +65,7 @@ for pair in $(grep -rhoE '\{\{< variant [a-z_]+ ("[^"]*"|[a-z0-9._-]+) >\}\}' co
         esac
     done
 done
-manual_mds=$(find public -name index.md -path "*/rhoai-2-25-to-3-5/*")
+manual_mds=$(find public -name index.md -path "*/${manual_section}/*")
 for md in $manual_mds; do
     src="content/${md#public/}"
     [ -f "$src" ] || src="content/$(dirname "${md#public/}")/_index.md"
@@ -87,6 +95,11 @@ for md in $manual_mds; do
         fail=1
     fi
 done
+
+if [ "$pages" -eq 0 ]; then
+    echo "CONTRACT pages: no manual pages found under '*/${manual_section}/*' — is docs_section in hugo.yaml still '${manual_section}'?"
+    fail=1
+fi
 
 [ "$fail" -eq 0 ] &&
     echo "contracts OK — $pages pages, $labels variant labels, $tokens customize tokens" &&

@@ -41,9 +41,9 @@ Note the root 404 is expected: with a path in baseURL the dev server serves at
 
 Files under `layouts/` and `assets/js/` marked as pinned oink v1.4.0 copies
 (`layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
-`layouts/_partials/pager-state.html`, `assets/js/action-registry.js`,
-`assets/js/page-actions.js`, `layouts/_partials/actions/context.html`,
-`layouts/_partials/actions/title-menu.html`) each carry a provenance comment
+`layouts/_partials/pager-state.html`, `layouts/_partials/actions/page-urls.html`,
+`assets/js/action-registry.js`, `assets/js/page-actions.js`,
+`layouts/_partials/actions/context.html`, `layouts/_partials/actions/title-menu.html`) each carry a provenance comment
 naming its one deliberate change. Any edit beyond that change requires
 re-diffing against `~/go/pkg/mod/github.com/pgsty/oink@v1.4.0/`.
 Sanctioned extension points (free to edit): `td-variant-selector.html`,
