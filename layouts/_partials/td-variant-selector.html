@@ -1,20 +1,4 @@
-{{- /* Display-option selector: a control per axis (params.variants, an
-     ordered slice), rendered at the top of every docs page — the project
-     override of layouts/docs/baseof.html calls this partial right after the
-     navbar, above the breadcrumb topline.
-
-     Styled like the theme's nav util buttons. The runtime persists choices
-     in localStorage ('td-variant:v1:<axis>'), syncs tabs via the storage
-     event, and filters blocks through <html> attributes; the CSS comes from
-     hooks/head-end.html, so the first paint already matches. The per-axis
-    config (#td-variant-config, emitted there) supplies defaults, the
-    valid option ids, and the per-axis status phrases, so a stored value
-    that is no longer configured falls back instead of painting a dead
-    attribute.
-
-     The print baseof never calls this partial, so print bundles carry no
-     control; print and markdown outputs carry every variant, labeled,
-     because only the interactive HTML filters content. */ -}}
+{{- /* Pinned copy of oink v1.4.0 layouts/_partials/td-variant-selector.html plus the customize-tail guard, as of Shell 1f1471c74947. Kept in Migration: this site has no params.customize, and Shell's renderStatus() would append " — reading as  on api" with empty fields; the local guard (if (!('user' in fields) || !('cluster' in fields)) return;) ends the sentence at the axes. Re-diff on a theme bump. TODO(Shell): add the guard to Shell's td-variant-selector.html, then delete this override and bump the hugo.yaml pin. */ -}}
 <div class="td-variant-selector d-print-none" data-td-variant-selector hidden>
   {{- range site.Params.variants }}
   {{- $axis := printf "%v" (.id | default "") }}

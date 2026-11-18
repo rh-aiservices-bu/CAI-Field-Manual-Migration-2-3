@@ -2,6 +2,8 @@
 
 Hugo Extended >= 0.168 + Go >= 1.27 documentation site (theme via Hugo modules,
 no Node.js). README.md is the source of truth for setup and architecture.
+This repo owns content only and imports `CAI-Field-Manual-Shell` as a Hugo
+module for look-and-feel and rules; propose shell/chrome changes there.
 
 ## Before you push: the publication gate (mandatory)
 
@@ -15,6 +17,15 @@ hugo --cleanDestinationDir --gc --minify --environment production \
 No output = clean. Build failure or any other WARN = not done. Fix and re-run.
 Note the root 404 is expected: with a path in baseURL the dev server serves at
 `http://localhost:1313/CAI-Field-Manual-Migration-2-3/`.
+
+In CI the same gate runs via the Shell checkout (`shell/scripts/publication-gate.sh`
+via `.github/workflows/github-pages.yaml`).
+
+Contract check (optional, needs sibling Shell clone + `public/` from the production build):
+
+```sh
+sh ../CAI-Field-Manual-Shell/scripts/check-contracts.sh
+```
 
 ## Content rules
 
@@ -37,24 +48,30 @@ Note the root 404 is expected: with a path in baseURL the dev server serves at
   unused.)
   Never hardcode names or cluster hosts.
 
-## Do not touch without re-diffing
+## Chrome lives in Shell
 
-Files under `layouts/` and `assets/js/` marked as pinned oink v1.4.0 copies
-(`layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
-`layouts/_partials/pager-state.html`, `layouts/_partials/actions/page-urls.html`,
-`assets/js/action-registry.js`, `assets/js/page-actions.js`,
-`layouts/_partials/actions/context.html`, `layouts/_partials/actions/title-menu.html`) each carry a provenance comment
-naming its one deliberate change. Any edit beyond that change requires
-re-diffing against `~/go/pkg/mod/github.com/pgsty/oink@v1.4.0/`.
-Sanctioned extension points (free to edit): `td-variant-selector.html`,
-`hooks/head-end.html`, `hooks/body-end.html`, the customize shortcodes,
-`static/js/`, `static/css/`, `hugo.yaml`, `data/home.yaml`, `content/`.
+Chrome files (layouts, assets, static, scripts) live in `CAI-Field-Manual-Shell`,
+imported as a pinned Hugo module (`hugo.yaml` → `module.imports`). The pinned
+oink v1.4.0 copies in Shell carry their own provenance comments. Propose
+shell/chrome changes there, not here.
+
+- The pinned oink v1.4.0 copies in Shell are `layouts/docs/baseof.html`,
+  `layouts/_partials/shell/sidebar-tree.html`, `layouts/_partials/pager-state.html`,
+  `layouts/_partials/actions/page-urls.html`, `assets/js/action-registry.js`,
+  `assets/js/page-actions.js`, `layouts/_partials/actions/context.html`,
+  `layouts/_partials/actions/title-menu.html`. Each carries a provenance comment
+  naming its deliberate change. In this repo only two overrides are kept locally
+  (each with a `TODO(Shell)` header): `layouts/_partials/actions/page-urls.html`
+  and `layouts/_partials/td-variant-selector.html`.
+- Sanctioned extension points (free to edit): `hugo.yaml`, `data/home.yaml`,
+  `content/`. Everything else (`td-variant-selector.html`, `hooks/…`,
+  customize shortcodes, `static/js/`, `static/css/`) lives in Shell.
 
 ## Verification for JS changes
 
-Interactive behavior lives in `static/js/` and `assets/js/`. If you change it,
-verify the rendered page actually works (dev server + browser), not just that
-the build passes.
+Interactive behavior lives in the Shell module's `assets/js/` + `assets/css/`.
+If you change it there, verify the rendered page actually works (dev server +
+browser), not just that the build passes.
 
 ## omp agent (CI)
 
