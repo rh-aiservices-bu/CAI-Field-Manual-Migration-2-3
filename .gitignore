@@ -1,5 +1,9 @@
+/_archive/
+/.hugo_build.lock
+/.hugo_cache/
+/hugo.direct.sum
+/hugo.work
+/hugo.work.sum
 /public/
 /resources/
-/.hugo_cache/
-/.hugo_build.lock
 .DS_Store

@@ -3,6 +3,7 @@ title: RHOAI 2.25 → 3.5 migration
 description: Migrate Red Hat OpenShift AI 2.25.10 (or later 2.25.z) in place to 3.5 — in the order you do the work, with every step verified and every known break documented where you hit it.
 weight: 5
 icon: fa-solid fa-route
+sidebar_root_for: self
 outputs: [HTML, RSS, print, markdown, LLMSFULL]
 cascade:
   type: docs

@@ -4,8 +4,9 @@ hero:
   align: center
   eyebrow: field manual
   title_lines:
-    - words: [{ text: OpenShift AI 2.25 → 3.5. }]
-    - words: [{ text: Migrated in the right order. }]
+    - words: [{ text: Red Hat OpenShift AI  }]
+    - words: [{ text: Migration from 2.25 → 3.5 }]
+    - words: [{ text: a Field Manual }]
   lead: An in-place migration from Red Hat OpenShift AI 2.25.10+ to 3.5, ordered by when you do the work. Every command has a verify step, and every known break is documented where you hit it.
   actions:
     - { label: Start the migration, url: rhoai-2-25-to-3-5/, icon: fa-solid fa-route, style: primary }

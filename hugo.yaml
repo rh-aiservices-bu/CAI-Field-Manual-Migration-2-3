@@ -55,7 +55,7 @@ outputs:
 
 params:
   # Red Hat CAI Team lockup (fedora + divider + wordmark); sized for the
-  # 4.3:1 aspect in assets/scss/_styles_project.scss. Ink follows the site
+  # 4.3:1 aspect in the Shell module's assets/scss/_styles_project.scss. Ink follows the site
   # theme toggle via the SVG's own prefers-color-scheme query.
   logo: icons/logo-rh-cai.svg
   github_repo: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3
@@ -69,7 +69,7 @@ params:
     preset: paper
     preset_menu: [paper, slate, ink, terminal]
     # Wordmark follows each preset's UI face (var(--td-ui-font-family))
-    # via the :root override in assets/scss/_styles_project.scss, so a
+    # via the :root override in the Shell module's assets/scss/_styles_project.scss, so a
     # Slate/Ink/Terminal reader never sees a foreign face in the brand row.
     dark_mode: true
     section_index: cards
@@ -81,11 +81,13 @@ params:
     # content/chat/_index.md until the section is functional), so the tree
     # has the manual plus Home for now.
     docs_sidebar_root: home
-    sidebar_root_menu: false
+    sidebar_root_menu: true
     # Numbered workshop-chrome nav (B): CSS counters give the top level "N."
     # and its children "N.M", so icon rows are gone from the tree --
     # `all`/`groups` would paint marks next to the numbers; marks stay in
-    # landing cards, page headers, and the navbar.
+    # landing cards, page headers, and the navbar. With one manual it
+    # renders as the static link td-shell-root--static above the tree
+    # (manual name in the selector row).
     sidebar_icon_policy: none
     docs_section: rhoai-2-25-to-3-5
     share: [claude, chatgpt, linkedin, email, copy]
@@ -157,7 +159,12 @@ menus:
 
 module:
   imports:
-    - path: github.com/pgsty/oink
+    - path: github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
+      # Pinned to Shell commit 1f1471c74947 on main; bump by editing this hash.
+      # Chrome defaults (logo, offline_search, copyright, footer_center_info,
+      # ui incl. docs_section/docs_sidebar_root) live in the Shell module's
+      # hugo.yaml and are deep-merged; site values win on conflict.
+      version: 1f1471c74947
   hugoVersion:
     extended: true
     min: 0.168.0

@@ -8,8 +8,13 @@ with literal expected output, and known issues are documented where the
 reader hits them. The author conventions are in
 [`Docs/field-manual-conventions.md`](Docs/field-manual-conventions.md).
 
+This repo owns **content only**. Look-and-feel, layout overrides, and build
+rules come from the
+[`CAI-Field-Manual-Shell`](https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell)
+Hugo module (imported via `hugo.yaml` → `module.imports`).
+
 Built with [Hugo](https://gohugo.io/) and the [OINK](https://oink.pgsty.com/)
-theme (`github.com/pgsty/oink`).
+theme (`github.com/pgsty/oink`, transitively via the Shell module).
 
 ## How to consume it
 
@@ -55,7 +60,8 @@ Start at the [RHOAI 2.25 → 3.5 migration](https://rh-aiservices-bu.github.io/C
   `content/rhoai-2-25-to-3-5/`. Run the publication gate
   (below) before opening a PR. Merges to `main` deploy automatically via
   GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions**
-  (one-time admin step).
+  (one-time admin step). Propose shell/chrome changes in
+  `CAI-Field-Manual-Shell` — not here.
 
 Where things live:
 
@@ -66,52 +72,19 @@ Where things live:
   customize shortcodes remain but are unused),
   `docs_section: rhoai-2-25-to-3-5` (drives the llms.txt Documentation index and
   the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
-  the whole site tree)
-- `data/home.yaml` — landing page sections (hero, cards, cta)
+  the whole site tree). Chrome defaults (`logo`, `offline_search`, `copyright`,
+  `footer_center_info`, `ui` incl. `docs_section`/`docs_sidebar_root`) live in the
+  Shell module's `hugo.yaml` and are deep-merged; site values win on conflict.
+- `data/home.yaml` — landing page sections (hero, timeline, cards, faq, cta)
 - `content/_index.md` — home page front matter
 - `content/rhoai-2-25-to-3-5/` — the migration manual
-- `Docs/field-manual-conventions.md` — the author doctrine (the six
-  conventions every page follows)
-- `layouts/_partials/google_analytics.html` — GA4 partial (the theme's
-  head.html calls it in production)
-- `layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
-  `layouts/_partials/pager-state.html`, `layouts/_partials/actions/page-urls.html`
-  — pinned copies of the oink v1.4.0 files, each headed by a provenance comment
-  naming its one deliberate change (page-top selector call; Home promoted to
-  the tree's top level with a small-screen Home row; pager rooted at the
-  page's own section instead of the site root; leaf-bundle `createChild` fix
-  — parent the target once when `LogicalName == "index.md"`). Re-diff all
-  against `~/go/pkg/mod/github.com/pgsty/oink@v<ver>/` on a theme bump.
-- `layouts/_partials/td-variant-selector.html` +
-  `layouts/_partials/hooks/head-end.html` — the page-top selector and the
-  pre-paint persistence runtime (config blob, filter CSS). The theme ships
-  both hooks empty, so these are sanctioned extension points, not copies.
-- `layouts/_shortcodes/customize.html` +
-  `layouts/_shortcodes/customize-form.html` — token substitution points
-  and the Customize form
-- `static/js/agent-setup.js` + `static/css/agent-setup.css` (wired through
-  the `body-end`/`head-end` hooks) — the *Feed it to my AI Agent*
-  copy-prompt modal. The row is registered with the assistant page actions
-  in `layouts/_partials/actions/context.html` (`url: "#agent-prompt"`), so
-  it appears directly under *Open Gemini* in both the page action menu and
-  the palette. The JS intercepts that fragment hash, opens the modal, and
-  clears the hash so the action can fire again. The repo name reaches the JS
-  via the `__TD_AGENT_SETUP__` blob the same way the chat page gets
-  `llmsFull`.
-- `.github/workflows/github-pages.yaml` — deploy workflow
-- `assets/js/action-registry.js`, `assets/js/page-actions.js`,
-  `layouts/_partials/actions/context.html`,
-  `layouts/_partials/actions/title-menu.html` — pinned copies of the oink
-  v1.4.0 action files with one deliberate change each: an *Open Gemini*
-  assistant action (`https://gemini.google.com/app`, plain app link —
-  readers write their own prompt; no URL-prefill plumbing) registered after
-  *Open in Claude* in the page action menu and the palette, plus the
-  *Feed it to my AI Agent* row. Re-diff against
-  `~/go/pkg/mod/github.com/pgsty/oink@v<ver>/` on a theme bump.
+- `Docs/field-manual-conventions.md` — the author doctrine (five active conventions; customize tokens retired in this repo)
+- Layouts, assets, and static (chrome): live in the Shell module (`CAI-Field-Manual-Shell`),
+  imported as a pinned Hugo module. See that repo's README for what it exports.
 
-The project root stays minimal: the theme module supplies the navbar logo and
-favicon, and build outputs (`public/`, `resources/`) are gitignored and
-regenerate.
+The project root stays minimal: the Shell module supplies the layouts and
+chrome, the theme module (oink) supplies the navbar chrome, and build outputs
+(`public/`, `resources/`) are gitignored and regenerate.
 
 ## Disclaimers
 
@@ -129,6 +102,12 @@ Prerequisites:
 
 - Hugo Extended ≥ 0.168 (`hugo version`)
 - Go ≥ 1.27 — no Node.js needed (Hugo modules fetch the theme)
+- Dart Sass on `PATH` — `layouts/_partials/head-css.html` sets `transpiler: dartsass`;
+  Hugo Extended does **not** bundle Dart Sass
+  ([oink comment `head-css.html:2-3`](https://github.com/pgsty/oink/blob/main/layouts/_partials/head-css.html#L2)).
+  Install with `brew install sass/sass/sass`, `npm i -g sass`, or
+  `snap install dart-sass`. Without it the build fails before the publication
+  gate's WARN filter runs.
 
 ```sh
 git clone https://github.com/rh-aiservices-bu/CAI-Field-Manual-Migration-2-3.git
@@ -139,24 +118,82 @@ hugo server
 With a path in `baseURL`
 (`https://rh-aiservices-bu.github.io/CAI-Field-Manual-Migration-2-3/`), the dev
 server serves at `http://localhost:1313/CAI-Field-Manual-Migration-2-3/` — a 404
-at the root is expected, not a broken build.
+at the root is expected, not a broken build. Builds use the Shell commit pinned in
+`hugo.yaml` `module.imports[].version`, not Shell `main` — deliberate, commit-precise;
+the `hugo.work` workspace replacement below overrides it only for testing unpushed Shell work.
+
+To verify a Shell working-tree change locally (before it is pushed), add a
+workspace replacement — create `hugo.work` in this repo root containing:
+
+```
+go 1.27.3
+
+use .
+
+replace github.com/rh-aiservices-bu/CAI-Field-Manual-Shell => ../CAI-Field-Manual-Shell
+```
+
+Then run with the workspace:
+
+```sh
+HUGO_MODULE_WORKSPACE=hugo.work hugo server
+```
+
+Verify with `hugo config` / `hugo mod graph` that the replacement is active.
+`hugo.work` is gitignored — never commit it.
 
 ### Publication gate
 
-```sh
-hugo --cleanDestinationDir --gc --minify --environment production \
-  --printPathWarnings
-```
-
-Note: `--panicOnWarning` is intentionally omitted — the pinned theme version
-(v1.4.0) still transpiles SCSS with Hugo's deprecated LibSass, which emits a
-WARNING on Hugo ≥ 0.153 and would abort the build. Gate on the remaining
-warning surface instead: assert the build emits no WARN lines other than the
-known libsass one.
+One implementation, used locally and by CI (both the deploy build and PR
+checks run it). Locally the raw build is enough:
 
 ```sh
 hugo --cleanDestinationDir --gc --minify --environment production \
   --printPathWarnings 2>&1 | grep -i warn | grep -v "css.Sass: libsass"
 ```
 
-No output = clean. Revisit when the theme moves to the Dart Sass transpiler.
+In CI the gate runs via the Shell checkout:
+
+```sh
+shell/scripts/publication-gate.sh --baseURL "https://example.invalid/docs/"
+```
+
+The build must succeed and the only WARN allowed is the known oink libsass
+deprecation; anything else fails with exit 1.
+
+Optional contract check (needs sibling Shell clone + `public/` from the
+production build):
+
+```sh
+sh ../CAI-Field-Manual-Shell/scripts/check-contracts.sh
+```
+
+Note: `--panicOnWarning` is intentionally not used. The pinned theme version
+(v1.4.0) still transpiles SCSS with Hugo's deprecated LibSass, which emits a
+WARNING on Hugo ≥ 0.153 and would abort the build. The gate asserts the build
+emits no WARN lines other than the known libsass one. Revisit when the theme
+moves to the Dart Sass transpiler.
+
+### Updating the shell
+
+Bump the shell pin to a newer commit on `main`:
+
+```sh
+# 1) pick the new hash (12-char short hash is enough for hugo.yaml)
+git ls-remote https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell main | cut -c1-12
+# 2) edit version: in hugo.yaml → module.imports[].version
+# 3) reconcile Go lockfiles (the raw build does not need them)
+go get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@<hash> && go mod tidy
+# 4) re-run the gate
+hugo --cleanDestinationDir --gc --minify --environment production \
+  --printPathWarnings 2>&1 | grep -i warn | grep -v "css.Sass: libsass"
+```
+
+When a new pin contains fixes for the two kept `TODO(Shell)` overrides
+(`layouts/_partials/actions/page-urls.html` and
+`layouts/_partials/td-variant-selector.html`), delete those overrides and bump
+the pin — see their headers for the re-diff note.
+
+## One-time admin
+
+- **GitHub Pages**: Settings → Pages → Source = **GitHub Actions**.
