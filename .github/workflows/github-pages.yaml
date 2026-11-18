@@ -60,12 +60,13 @@ jobs:
           extended: true
 
       - name: Install Dart Sass
-        run: npm install -g sass
+        run: npm install -g sass-embedded
 
       - name: Record build tool versions
         run: |
           go version
           hugo version
+          sass --version
 
       - name: Download OINK
         run: go mod download
@@ -109,12 +110,13 @@ jobs:
           extended: true
 
       - name: Install Dart Sass
-        run: npm install -g sass
+        run: npm install -g sass-embedded
 
       - name: Record build tool versions
         run: |
           go version
           hugo version
+          sass --version
 
       - name: Download OINK
         run: go mod download
