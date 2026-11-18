@@ -1,17 +1,4 @@
-{{- /* Override of oink v1.4.0 layouts/_partials/actions/page-urls.html.
-     Re-diff against ~/go/pkg/mod/github.com/pgsty/oink@v1.4.0/layouts/_partials/actions/page-urls.html
-     on a theme bump.
-
-     Change: createChild now targets the section, not the leaf-bundle folder.
-     For a leaf bundle (index.md) Hugo's $p.File.Dir is the leaf dir itself
-     (e.g. rhoai-2-25-to-3-5/pre-flight/), so path.Dir $repoPath becomes
-     .../pre-flight — creating a .md inside a leaf bundle, which Hugo renders
-     as a page resource, not a page. This override detects a leaf bundle via
-     LogicalName == "index.md" and uses the parent dir instead, restoring the
-     pre-reorg target (the section). Edit/history are self-derived and
-     intentionally keep pointing at the leaf's index.md.
-
-     All other logic is identical to the theme file. */ -}}
+{{- /* Pinned copy of oink v1.4.0 layouts/_partials/actions/page-urls.html as of Shell 1f1471c74947. Kept in Migration: Shell has no page-urls.html, and this copy parents the bundle dir when File.LogicalName == "index.md" so the createChild action targets the section on the 11 leaf bundles. Re-diff on a theme bump. TODO(Shell): add this file to CAI-Field-Manual-Shell, then delete this override and bump the hugo.yaml pin. */ -}}
 {{- $p := . -}}
 {{- $markdownURL := "" -}}
 {{- with $p.AlternativeOutputFormats.Get "markdown" }}{{ $markdownURL = .RelPermalink }}{{ end -}}
