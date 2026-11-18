@@ -59,8 +59,8 @@ for pair in $(grep -rhoE '\{\{< variant [a-z_]+ ("[^"]*"|[a-z0-9._-]+) >\}\}' co
 done
 manual_mds=$(find public -name index.md -path "*/rhoai-2-25-to-3-5/*")
 for md in $manual_mds; do
-    src="content/${md#public/}"; src=${src%/index.md}.md
-    [ -f "$src" ] || src="content/${md#public/}_index.md"
+    src="content/${md#public/}"
+    [ -f "$src" ] || src="content/$(dirname "${md#public/}")/_index.md"
     [ -f "$src" ] || continue
     pages=$((pages + 1))
     src_variants=$(grep -cE '\{\{< variant ' "$src" || true)

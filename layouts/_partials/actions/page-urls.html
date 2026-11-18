@@ -1,0 +1,66 @@
+{{- /* Override of oink v1.4.0 layouts/_partials/actions/page-urls.html.
+     Re-diff against ~/go/pkg/mod/github.com/pgsty/oink@v1.4.0/layouts/_partials/actions/page-urls.html
+     on a theme bump.
+
+     Change: createChild now targets the section, not the leaf-bundle folder.
+     For a leaf bundle (index.md) Hugo's $p.File.Dir is the leaf dir itself
+     (e.g. rhoai-2-25-to-3-5/pre-flight/), so path.Dir $repoPath becomes
+     .../pre-flight — creating a .md inside a leaf bundle, which Hugo renders
+     as a page resource, not a page. This override detects a leaf bundle via
+     LogicalName == "index.md" and uses the parent dir instead, restoring the
+     pre-reorg target (the section). Edit/history are self-derived and
+     intentionally keep pointing at the leaf's index.md.
+
+     All other logic is identical to the theme file. */ -}}
+{{- $p := . -}}
+{{- $markdownURL := "" -}}
+{{- with $p.AlternativeOutputFormats.Get "markdown" }}{{ $markdownURL = .RelPermalink }}{{ end -}}
+{{- $printURL := "" -}}
+{{- with $p.CurrentSection -}}
+  {{- with .AlternativeOutputFormats.Get "print" }}{{ $printURL = .RelPermalink }}{{ end -}}
+{{- end -}}
+{{- $editURL := "" -}}
+{{- $historyURL := "" -}}
+{{- $childURL := "" -}}
+{{- $issueURL := "" -}}
+{{- $projectIssueURL := "" -}}
+{{- $repoPath := "" -}}
+{{- $repo := $p.Param "github_repo" -}}
+{{- $projectRepo := $p.Param "github_project_repo" | default $repo | default "" -}}
+{{- if and $p.File $repo -}}
+  {{- $sourcePath := partial "actions/source-path.html" (dict
+        "filename" $p.File.Filename "workingDir" hugo.WorkingDir
+        "pathBase" ($p.Param "path_base_for_github_subdir")) -}}
+  {{- $subdir := $p.Param "github_subdir" | default "" -}}
+  {{- $branch := $p.Param "github_branch" | default "main" -}}
+  {{- if $sourcePath -}}
+    {{- $repoPath = printf "%s/%s/%s" $branch $subdir $sourcePath | replaceRE "//+" "/" -}}
+    {{- $editURL = printf "%s/edit/%s" $repo $repoPath -}}
+    {{- /* Same derivation as the edit link, so a repository that supports one
+           supports the other. */ -}}
+    {{- $historyURL = printf "%s/commits/%s" $repo $repoPath -}}
+    {{- $stub := resources.Get "stubs/new-page-template.md" -}}
+    {{- $childQS := querify "value" $stub.Content "filename" "change-me.md" -}}
+    {{- /* Leaf bundles (index.md): File.Dir is the leaf dir, so path.Dir
+           repoPath would create inside the leaf — a page resource, not a page.
+           Parent it so the target stays the section (pre-reorg behavior). */ -}}
+    {{- $childDir := path.Dir $repoPath -}}
+    {{- if eq $p.File.LogicalName "index.md" -}}
+      {{- $childDir = path.Dir $childDir -}}
+    {{- end -}}
+    {{- $childURL = printf "%s/new/%s?%s" $repo $childDir $childQS -}}
+  {{- end -}}
+  {{- $issueURL = printf "%s/issues/new?%s" $repo (querify "title" $p.Title) -}}
+{{- end -}}
+{{- /* A project issue is filed against the product, not against the page, so
+       it needs no source path and no `github_repo`. Nesting it with the
+       page-derived links meant a site that declared only a project repository
+       -- the common shape for a docs site whose code lives elsewhere -- lost
+       the one action it had configured. */ -}}
+{{- with $p.Param "github_project_repo" }}{{ $projectIssueURL = printf "%s/issues/new" . }}{{ end -}}
+{{- return (dict
+  "markdown" $markdownURL "printSection" $printURL
+  "edit" $editURL "history" $historyURL "createChild" $childURL "createIssue" $issueURL
+  "createProjectIssue" $projectIssueURL "projectRepo" $projectRepo
+  "repoPath" $repoPath
+) -}}
