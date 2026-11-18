@@ -32,9 +32,11 @@ sh ../CAI-Field-Manual-Shell/scripts/check-contracts.sh
 - The one manual lives at `content/rhoai-2-25-to-3-5/` (one page per
   migration phase).
 - Author doctrine: read `Docs/field-manual-conventions.md` before
-  writing manual pages. Six conventions: outcome first; prerequisites stated;
-  every command followed by a verify step with literal expected output;
-  verification; rollback; known issues documented where the reader hits them.
+  writing manual pages. Five active conventions (customize tokens retired
+  in this repo): outcome-first navigation; status-gate verification (every
+  command followed by a verify step with literal expected output); inline
+  known issues (symptom, diagnosis, workaround, tracker id); variant selector
+  axes; dual consumption (markdown output never hides variants).
 - Display options: variant blocks `{{< variant deploy gitops >}}` (also
   `standard` = not GitOps-managed; every command is `oc` CLI, so there is no
   console/CLI split), `{{< variant env disconnected >}}` (also `connected`), and

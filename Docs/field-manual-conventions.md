@@ -1,11 +1,12 @@
 ---
 title: Conventions and intent
-description: The six conventions every field manual follows — why each exists and what the reader loses without it.
+description: "Five active conventions (customize tokens retired in this repo) — why each exists and what the reader loses without it."
 icon: fa-solid fa-compass
 weight: 10
 ---
 
-Field manuals here are written against six conventions. Each one below states why it exists, what a reader loses when a manual skips it, and the rule itself. The [RHOAI 2.25 → 3.5 migration manual](../content/rhoai-2-25-to-3-5/) is the working exemplar.
+Field manuals in this family are written against **five active conventions**.
+The sixth — customize tokens — is retired in this repo (see § Customize tokens).
 
 ## Chronological information architecture
 
@@ -31,16 +32,23 @@ Version and ops-mode differences are permanent features of the product, not nois
 
 **Rule: route version and ops-mode divergence through the page-top selector's axes, and write labels that describe themselves.**
 
-## Customize tokens
+## Customize tokens — retired in this repo
+
+> [!NOTE]
+> Retired: `params.customize` is unset; the customize shortcodes remain but
+> are unused. Environment values in this repo are plain placeholders
+> (`https://api.<cluster-domain>:6443`, `<token>`, `<namespace>`, the
+> literal migration namespace `rhai-migration`). Do not replace them with
+> `{{< customize >}}` tokens — `check-contracts.sh` will flag them as
+> undeclared and the variant-selector chrome has no fields to hydrate. The
+> rule below is kept for Shell-era doctrine only.
 
 No two readers share a cluster name, a username, or a project. Customize tokens mark those values and substitute the reader's own — set once, applied in every command, with a shipped default so the manual still reads before any value is set. Without them, every command ships with one environment's values baked in; readers hand-edit, and hand-edits are where wrong clusters, stale usernames, and copy-paste mistakes come from.
 
-**Rule: substitute environment-specific values with customize tokens, each with a sensible shipped default.**
+**Rule (other repos retain it; not this one): substitute environment-specific values with customize tokens, each with a sensible shipped default.**
 
 ## Dual consumption
 
-A field manual is read by a human in a browser and consumed by an agent as markdown — same page, both outputs. The HTML filters variants and substitutes tokens interactively; the markdown output carries every variant labeled and every token at its shipped default, so nothing is lost, only flattened. Written for just one consumer, the page serves the other one ambiguity: an unlabeled variant or an unexplained value in the markdown is a sentence the agent cannot act on.
+A field manual is read by a human in a browser and consumed by an agent as markdown — same page, both outputs. The HTML filters variants interactively; the markdown output carries every variant labeled, so nothing is lost, only flattened — agents always see all variants. Written for just one consumer, the page serves the other one ambiguity: an unlabeled variant in the markdown is a sentence the agent cannot act on.
 
-**Rule: write every page so the markdown-only reader gets every variant labeled and every token at its shipped default.**
-
-
+**Rule: write every page so the markdown-only reader gets every variant labeled — the interactive HTML may filter variants, but the markdown output never hides them.**

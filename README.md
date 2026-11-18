@@ -75,11 +75,10 @@ Where things live:
   the whole site tree). Chrome defaults (`logo`, `offline_search`, `copyright`,
   `footer_center_info`, `ui` incl. `docs_section`/`docs_sidebar_root`) live in the
   Shell module's `hugo.yaml` and are deep-merged; site values win on conflict.
-- `data/home.yaml` — landing page sections (hero, cards, cta)
+- `data/home.yaml` — landing page sections (hero, timeline, cards, faq, cta)
 - `content/_index.md` — home page front matter
 - `content/rhoai-2-25-to-3-5/` — the migration manual
-- `Docs/field-manual-conventions.md` — the author doctrine (the six
-  conventions every page follows)
+- `Docs/field-manual-conventions.md` — the author doctrine (five active conventions; customize tokens retired in this repo)
 - Layouts, assets, and static (chrome): live in the Shell module (`CAI-Field-Manual-Shell`),
   imported as a pinned Hugo module. See that repo's README for what it exports.
 
